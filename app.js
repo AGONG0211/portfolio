@@ -5,6 +5,8 @@ const em = s => esc(s).replace(/\*([^*]+)\*/g, "<em>$1</em>").replace(/\n/g, "<b
 const ph = s => /\[.*\]/.test(s) ? ` class="ph"` : "";
 const IMG = k => `img/${k}.jpg`;
 const im = (k, alt = "", cls = "") => `<img src="${IMG(k)}" alt="${esc(alt)}" loading="lazy" ${cls ? `class="${cls}"` : ""} data-zoom>`;
+const AR = k => (window.FIGMA_AR || {})[k];
+const imc = k => AR(k) ? `<img src="${IMG(k)}" alt="" loading="lazy" data-zoom style="aspect-ratio:${AR(k)};object-fit:cover;width:100%">` : im(k);
 const CAT = { uxui: "UX/UI", character: "CHARACTER", graphic: "GRAPHIC", ai: "AI" };
 const app = $("#app");
 let pendingCat = null;
@@ -37,7 +39,7 @@ function home() {
 <div class="bio"><p>저는 사용자가 오래 머물고 싶은 서비스의 세계를 설계하는 UX/UI 디자이너입니다. 흩어진 관심은 행성으로, 일상의 작은 실천은 자라나는 마을로, 미뤄 둔 할 일은 곁을 지키는 캐릭터로 바꾸고, 그 안에서 사용자가 자연스럽게 다음 행동으로 이어지는 흐름을 만듭니다.</p>
 <p>캐릭터·3D 모델링·생성형 AI로 비주얼과 모션을 직접 만들어 빠르게 검증하고, 일본 학생들과의 글로벌 워크숍부터 앱 iOS 출시까지 다양한 팀과 함께 결과를 완성해 왔습니다.</p></div>
 <div class="kw">${[["#세계관 설계", "p-orbit"], ["#캐릭터·3D", "p-wanju"], ["#인터랙션", "p-orbit"], ["#AI 비주얼 디렉션", "p-onvia"], ["#출시 경험", "p-wanju"]].map(([t, h]) => `<a class="chip" href="#${h}">${t}</a>`).join("")}</div>
-<div class="hlt"><div><b>iOS 출시</b><span>WANJU · 직접 제안한 팀 프로젝트</span></div><div><b>SILVER AWARD</b><span>Global Design Workshop 2025</span></div><div><b>Web MVP</b><span>ORBIT · 졸업전시</span></div></div>
+<div class="hlt"><div><b>iOS 출시</b><span>WANJU · 직접 제안한 팀 프로젝트</span></div><div><b>SILVER AWARD</b><span>Global Design Workshop 2025</span></div><div><b>Web MVP</b><span>ORBIT 졸업전시 · 1인 구현</span></div></div>
 <a class="btn" href="#resume">이력서 보기 →</a></div></div></div></section>
 
 <section id="work"><div class="wrap">
@@ -73,7 +75,7 @@ function card(id) {
 <div class="th ${c.portrait ? "portrait" : ""} ${c.phones ? "phs" : ""}" ${c.phones ? `style="background:${p.cardBg}"` : ""}>${c.phones ? c.phones.map(k => `<img src="${IMG(k)}" alt="">`).join("") : im(c.thumb, p.title)}${c.loop ? `<video src="${c.loop}" muted loop playsinline preload="none"></video>` : ""}<span class="go" aria-hidden="true">↗</span></div>
 <div class="info"><h4>${esc(p.title)}</h4><p>${esc(c.desc)}</p>${tagrow(c.tags || c.chips)}</div></article>`;
 }
-const contact = () => `<section class="contact" id="contact"><div class="wrap"><h2 data-r><span>Let's build</span><span>a <em>world</em> together.</span></h2>
+const contact = () => `<section class="contact" id="contact"><div class="wrap"><h2 data-r><span>Let's build </span><span>a <em>world</em> together.</span></h2>
 <div class="mails">${S.emails.map(m => `<button data-copy="${m}">${m} <small>복사</small></button>`).join("")}</div>
 <div class="foot"><span>© 2026 Yang Seyeon · UX/UI · Character Designer</span><button class="up" data-top aria-label="맨 위로">↑</button></div></div></section>`;
 
@@ -104,7 +106,8 @@ function side(p) {
 <dl>${p.meta.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd${ph(v)}>${esc(v)}</dd></div>`).join("")}</dl>
 ${p.cta ? (p.cta.video ? `<button class="btn" data-video="${p.video}">${esc(p.cta.t)}</button>` : `<a class="btn" href="${esc(p.cta.href)}" ${p.cta.href.startsWith("http") ? 'target="_blank" rel="noopener"' : 'data-todo="링크 준비 중"'}>${esc(p.cta.t)}</a>`) : ""}</div>`;
 }
-function cover(p) {
+function cover(p) { return coverRaw(p).replace('<div class="cover', `<div style="${(window.FIGMA_COVER || {})[p.title] ? `aspect-ratio:${window.FIGMA_COVER[p.title]};height:auto;` : ""}" class="cover`); }
+function coverRaw(p) {
   const c = p.ov.cover;
   if (c.kind === "phones") return `<div class="cover phones" data-r style="background:linear-gradient(135deg,${c.bg[0]},${c.bg[1]})">${c.keys.map(k => im(k)).join("")}${p.video ? `<button class="btn ghost play" data-video="${p.video}">▶ 소개 영상</button>` : ""}</div>`;
   if (c.kind === "posters") return `<div class="cover posters" data-r style="background:linear-gradient(135deg,${c.bg[0]},${c.bg[1]})">${c.keys.map(k => im(k)).join("")}</div>`;
@@ -122,7 +125,7 @@ function solution(it) {
   if (L === "pair") return `<div class="pair" data-r>${it.panels.map(pp => `<div class="panel"><div><b>${esc(pp.t)}</b>${pp.d ? `<p>${esc(pp.d)}</p>` : ""}</div><div class="ims" style="--w:${pp.w || 210}px">${pp.keys.map(k => im(k)).join("")}</div></div>`).join("")}</div>`;
   if (L === "split") return `<div class="split" data-r><div class="panel lp">${it.left.map(c => `<div><b>${esc(c.t)}</b><p>${esc(c.d)}</p>${c.chips ? `<div class="chips">${c.chips.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}${im(c.key)}</div>`).join("")}</div>
 <div class="panel rules"><b>${esc(it.rules.t)}</b>${it.rules.d ? `<p>${esc(it.rules.d)}</p>` : ""}${it.rules.items.map(([a, b], i) => `<div class="rl"><i>${i + 1}</i><div><b>${esc(a)}</b><span>${esc(b)}</span></div></div>`).join("")}</div></div>`;
-  if (L === "wide") return `<div class="panel wide ${it.tall ? "tall" : ""}" data-r>${it.imgs ? `<div class="ims">${it.imgs.map(([k, c]) => `<figure>${im(k)}<figcaption>${esc(c)}</figcaption></figure>`).join("")}</div>` : im(it.img)}
+  if (L === "wide") return `<div class="panel wide ${it.tall ? "tall" : ""}" data-r>${it.imgs ? `<div class="ims">${it.imgs.map(([k, c]) => `<figure>${im(k)}<figcaption>${esc(c)}</figcaption></figure>`).join("")}</div>` : imc(it.img)}
 ${it.notes ? `<div class="wnotes">${it.notes.map(([t, d], i) => `<div><b><i>${i + 1}</i>${esc(t)}</b><p>${esc(d)}</p></div>`).join("")}</div>` : ""}</div>`;
   if (L === "flow") return flowc(it.steps, it.hl);
   return "";
@@ -165,7 +168,7 @@ function detail(id) {
   if (p.fin) { const f = p.fin; let v;
     if (f.keys) v = `<div class="final phones" data-r style="background:linear-gradient(135deg,${f.bg[0]},${f.bg[1]})">${f.keys.map(k => im(k)).join("")}</div>`;
     else if (f.posters) v = `<div class="final posters" data-r>${f.posters.map(k => im(k)).join("")}</div>`;
-    else v = `<div class="final ${f.tall ? "tall" : ""}" data-r>${im(f.img)}</div>`;
+    else v = `<div class="final ${f.tall && !AR(f.img) ? "tall" : ""}" data-r>${imc(f.img)}</div>`;
     if (f.video) v += `<div data-r><button class="btn acc" data-video="${p.video}">▶ 영상 전체 보기</button></div>`;
     S2.push([f.label === "BRANDING" ? "Branding" : "Final Output", head(f.label || "FINAL OUTPUT", f.h, f.b) + v]); }
   S2.push(["Result & Insight", `${head("RESULT & INSIGHT", "결과와 배운 점")}<div class="stk s14"><div class="rnum" data-r style="--n:${p.res.nums.length}">${p.res.nums.map(([v, l, s]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span><small>${esc(s)}</small></div>`).join("")}</div><div class="rnum rins" data-r style="--n:${p.res.ins.length}">${p.res.ins.map(([k, t]) => `<div><small>${esc(k)}</small><b>${esc(t)}</b></div>`).join("")}</div></div>`]);

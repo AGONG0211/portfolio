@@ -28,3 +28,12 @@ window.FIGMA_LINES = [
   const walk = o => { for (const k in o) { const v = o[k]; if (typeof v === "string") o[k] = apply(v); else if (v && typeof v === "object") walk(v); } };
   walk(window.PROJECTS);
 }
+
+/* 피그마 이미지 비율 (가로/세로) — 웹에서도 같은 비율로 잘라서 보여줌 */
+window.FIGMA_COVER = { ORBIT: "860/534", WANJU: "860/534", Groo: "860/517", ONVIA: "860/534", "BLOO.ME": "860/514", PITTO: "860/484", "AI DESIGN WEEK": "860/442", "PROM 인스타 템플릿": "860/681", TIMI: "860/534", NOMI: "860/484", CHOK: "860/533" };
+window.FIGMA_AR = { chok_hand: "804/498", chok_neck: "804/498", chok_scn: "804/498", chok_haptic: "804/563", groo_story: "804/453", onvia_g112: "804/452", pitto_char: "804/453", pitto_proto: "804/452", pitto_a1: "804/452", nomi_kw: "804/452", nomi_edit: "804/452", nomi_dash: "804/452", aiw_banner: "804/260", ig_ex1: "804/195", ig_ex3: "804/195",
+  groo_cover: "860/484", onvia_g53: "860/484", nomi_brand1: "860/619", chok_brand: "860/533" };
+/* NOMI Branding: 피그마는 대표 이미지 1장 */
+if (window.PROJECTS.nomi.fin) { delete window.PROJECTS.nomi.fin.posters; window.PROJECTS.nomi.fin.img = "nomi_brand1"; }
+/* ONVIA 커버: 피그마는 앱 화면 3장 (영상은 Final Output 버튼으로 계속 볼 수 있음) */
+window.PROJECTS.onvia.ov.cover = { kind: "phones", keys: ["onvia_search", "onvia_home", "onvia_map"], bg: ["#FFC48A", "#EE6A00"] };
