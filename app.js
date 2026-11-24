@@ -99,8 +99,8 @@ const donut = (pct, lab) => { const r = 34, C = 2 * Math.PI * r; return `<div cl
 const bars = (rows, max = 100) => `<div class="bars">${rows.map(([l, v, d]) => `<div class="r"><span>${esc(l)}</span><div class="tr"><i data-w="${(v / max) * 100}%"></i></div><b>${esc(d)}</b></div>`).join("")}</div>`;
 const insb = ([a, b]) => `<div class="ins"><b>${esc(a)}</b>${b ? `<span>${esc(b)}</span>` : ""}</div>`;
 function side(p) {
-  return `<div class="side"><a class="back" href="#more">← 전체 작업</a><h1>${esc(p.title)}${p.sub ? `<small>${esc(p.sub)}</small>` : ""}</h1><p class="one">${esc(p.one)}</p>
-<div class="tg">${(p.card.tags || p.tags).map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+  return `<div class="side"><h1>${esc(p.title)}${p.sub ? `<small>${esc(p.sub)}</small>` : ""}</h1><p class="one">${esc(p.one)}</p>
+<div class="tg">${p.tags.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
 <dl>${p.meta.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd${ph(v)}>${esc(v)}</dd></div>`).join("")}</dl>
 ${p.cta ? (p.cta.video ? `<button class="btn" data-video="${p.video}">${esc(p.cta.t)}</button>` : `<a class="btn" href="${esc(p.cta.href)}" ${p.cta.href.startsWith("http") ? 'target="_blank" rel="noopener"' : 'data-todo="링크 준비 중"'}>${esc(p.cta.t)}</a>`) : ""}</div>`;
 }
@@ -148,35 +148,50 @@ function detail(id) {
   const p = P[id]; setVars(p);
   const S2 = [];
   const ov = p.ov;
-  S2.push(["Overview", `${head("PROJECT OVERVIEW", ov.h, ov.b)}${cover(p)}
-${ov.steps ? `<div class="wcard" data-r><span class="lbl">${esc(ov.stepsTitle || "HOW IT WORKS")}</span><div class="steps">${ov.steps.map(([t, d], i) => `${i ? `<span class="arr">→</span>` : ""}<div class="st ${i === ov.hl ? "hl" : ""}"><small>STEP ${i + 1}</small><b>${esc(t)}</b><span>${esc(d)}</span></div>`).join("")}</div>
-${ov.legend ? `<div class="legend"><span>${esc(ov.legendTitle || "용어")}</span>${ov.legend.map(([a, b]) => `<span><i></i><b>${esc(a)}</b> ${esc(b)}</span>`).join("")}</div>` : ""}</div>` : ""}`]);
+  S2.push(["Overview", `${head("PROJECT OVERVIEW", ov.h, ov.b)}${cover(p)}`]);
   const bg = p.bg;
   let bgc = "";
   if (bg.stat) bgc = `<div class="wcard" data-r><div class="chead"><b>${esc(bg.stat.t)}</b><span>${esc(bg.stat.m)}</span></div><div class="sbar">${bg.stat.segs.map(([v]) => `<div data-w="${v}%">${v}%</div>`).join("")}</div><div class="lg">${bg.stat.segs.map(([v, l], i) => `<span><i style="background:${i ? "#D9DCE6" : "var(--acc)"}"></i>${esc(l)}</span>`).join("")}</div></div>`;
   if (bg.nums) bgc = `<div class="wcard" data-r><div class="chead"><b>${esc(bg.numsT || "데이터로 본 배경")}</b></div><div class="nums">${bg.nums.map(([v, l, s]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span>${s ? `<small>${esc(s)}</small>` : ""}</div>`).join("")}</div></div>`;
-  S2.push(["Background", `${head("BACKGROUND", bg.h, bg.b)}${bgc}<div class="boxes" data-r>${bg.boxes.map(([t, d], i, a) => `<div class="${i === a.length - 1 ? "last" : ""}"><small>0${i + 1}</small><b>${esc(t)}</b><p>${esc(d)}</p></div>`).join("")}</div>`]);
-  if (p.rs) { const r = p.rs; let h = head(r.label || "USER RESEARCH", r.h, r.b);
+  S2.push(["Background", `${head("BACKGROUND", bg.h, bg.b)}<div class="stk">${bgc}<div class="boxes" data-r style="--n:${bg.boxes.length}">${bg.boxes.map(([t, d], i, a) => `<div class="${i === a.length - 1 ? "last" : ""}"><small>0${i + 1}</small><b>${esc(t)}</b><p>${esc(d)}</p></div>`).join("")}</div></div>`]);
+  if (p.rs) { const r = p.rs; let h = "";
     if (r.sv) { const side2 = s => `<div><h4>${esc(s.t)}</h4>${s.donuts ? `<div class="donuts">${s.donuts.map(([v, l]) => donut(v, l)).join("")}</div>` : s.bars ? bars(s.bars, s.max) : s.quotes ? `<div class="quotes">${s.quotes.map(([q, w]) => `<div>"${esc(q)}"${w ? `<small>${esc(w)}</small>` : ""}</div>`).join("")}</div>` : "<div></div>"}${s.ins ? insb(s.ins) : ""}</div>`;
       h += `<div class="wcard" data-r><div class="chead"><b>${esc(r.sv.t)}</b><span>${esc(r.sv.m)}</span></div><div class="cols2">${side2(r.sv.l)}${side2(r.sv.r)}</div>${r.sv.ins ? insb(r.sv.ins) : ""}</div>`; }
-    if (r.iv) h += `<div class="wcard" data-r><div class="chead"><b>${esc(r.iv.t)}</b><span>${esc(r.iv.m)}</span></div><div class="ivg">${r.iv.items.map(([c, n, q]) => `<div><span class="c">${esc(c)}</span><b>${esc(n)}</b>${q ? `<p>${/^→/.test(q) ? esc(q) : `"${esc(q)}"`}</p>` : ""}</div>`).join("")}</div></div>`;
+    if (r.iv) h += `<div class="wcard" data-r><div class="chead"><b>${esc(r.iv.t)}</b><span>${esc(r.iv.m)}</span></div><div class="ivg" style="--n:${r.iv.items.length}">${r.iv.items.map(([c, n, q]) => `<div><span class="c">${esc(c)}</span><b>${esc(n)}</b>${q ? `<p>${/^→/.test(q) ? esc(q) : `"${esc(q)}"`}</p>` : ""}</div>`).join("")}</div></div>`;
     if (r.sum) h += `<div class="sum" data-r>${em(r.sum)}</div>`;
-    S2.push([r.label === "INSIGHT" ? "Insight" : "Research", h]); }
-  if (p.dir) S2.push([p.dir.label ? p.dir.label.split(" ")[0][0] + p.dir.label.split(" ")[0].slice(1).toLowerCase() : "Design Direction", `${head(p.dir.label || "DESIGN DIRECTION", p.dir.h, p.dir.b)}<div class="kcards" data-r>${p.dir.cards.map(([a, b, c]) => `<div><small>${esc(a)}</small><b>${esc(b)}</b><p>${esc(c)}</p></div>`).join("")}</div>`]);
-  S2.push([p.sol.label === "APPLICATIONS" ? "Applications" : "Solution", head(p.sol.label || "SOLUTION", p.sol.h, p.sol.b) + p.sol.items.map((it, i) => `<div class="solh" data-r ${it.cat ? `data-cat="${it.cat}"` : ""}><small>${String(i + 1).padStart(2, "0")}. ${esc(it.kw)}</small><h3>${em(it.t)}</h3><p>${esc(it.d)}</p></div>${solution(it)}`).join("")]);
+    S2.push([r.label === "INSIGHT" ? "Insight" : "Research", head(r.label || "USER RESEARCH", r.h, r.b) + `<div class="stk s20">${h}</div>`]); }
+  if (p.dir) S2.push([p.dir.label ? p.dir.label.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) : "Design Direction", `${head(p.dir.label || "DESIGN DIRECTION", p.dir.h, p.dir.b)}<div class="kcards" data-r style="--n:${p.dir.cards.length}">${p.dir.cards.map(([a, b, c]) => `<div><small>${esc(a)}</small><b>${esc(b)}</b><p>${esc(c)}</p></div>`).join("")}</div>`]);
+  S2.push([p.sol.label === "APPLICATIONS" ? "Applications" : "Solution", (p.sol.noHead ? "" : head(p.sol.label || "SOLUTION", p.sol.h, p.sol.b)) + p.sol.items.map((it, i) => `<div class="solh" data-r ${it.cat ? `data-cat="${it.cat}"` : ""}><small>${String(i + 1).padStart(2, "0")}. ${esc(it.kw)}</small><h3>${em(it.t)}</h3><p>${esc(it.d)}</p></div>${solution(it)}`).join("")]);
   if (p.fin) { const f = p.fin; let v;
     if (f.keys) v = `<div class="final phones" data-r style="background:linear-gradient(135deg,${f.bg[0]},${f.bg[1]})">${f.keys.map(k => im(k)).join("")}</div>`;
     else if (f.posters) v = `<div class="final posters" data-r>${f.posters.map(k => im(k)).join("")}</div>`;
     else v = `<div class="final ${f.tall ? "tall" : ""}" data-r>${im(f.img)}</div>`;
     if (f.video) v += `<div data-r><button class="btn acc" data-video="${p.video}">▶ 영상 전체 보기</button></div>`;
     S2.push([f.label === "BRANDING" ? "Branding" : "Final Output", head(f.label || "FINAL OUTPUT", f.h, f.b) + v]); }
-  S2.push(["Result & Insight", `${head("RESULT & INSIGHT", "결과와 배운 점")}<div class="rnum" data-r>${p.res.nums.map(([v, l, s]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span><small>${esc(s)}</small></div>`).join("")}</div><div class="rnum rins" data-r>${p.res.ins.map(([k, t]) => `<div><small>${esc(k)}</small><b>${esc(t)}</b></div>`).join("")}</div>${p.more ? doc(p) : ""}`]);
+  S2.push(["Result & Insight", `${head("RESULT & INSIGHT", "결과와 배운 점")}<div class="stk s14"><div class="rnum" data-r style="--n:${p.res.nums.length}">${p.res.nums.map(([v, l, s]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span><small>${esc(s)}</small></div>`).join("")}</div><div class="rnum rins" data-r style="--n:${p.res.ins.length}">${p.res.ins.map(([k, t]) => `<div><small>${esc(k)}</small><b>${esc(t)}</b></div>`).join("")}</div></div>`]);
   const idx = allOrder.indexOf(id), nid = allOrder[(idx + 1) % allOrder.length], np = P[nid];
-  app.innerHTML = nav("work") + `<main class="dpage"><div class="wrap dbody">${side(p)}<div class="content">${S2.map(([t, h], i) => `<section class="dsec" id="s-${i}" data-t="${esc(t)}">${h}</section>`).join("")}</div></div></main>
+  app.innerHTML = nav("work") + `<main class="dpage"><div class="wrap dbody">${side(p)}<div class="content">${S2.map(([t, h], i) => `<section class="dsec" id="s-${i}" data-t="${esc(t)}">${h}</section>`).join("")}${p.more ? doc(p) : ""}</div></div>${toc()}</main>
 <section class="next" data-go="${nid}" data-cursor="Next" style="--tint:${np.tint}"><div class="wrap"><div><span class="lbl" style="color:var(--sub);font-size:13px">NEXT PROJECT</span><h3>${esc(np.title)} →</h3></div><img src="${IMG(np.card.thumb)}" alt=""></div></section>
 <footer class="dfoot"><div class="wrap"><span>© 2026 Yang Seyeon</span><button data-top>Top ↑</button></div></footer>`;
   const more = $("#ux");
   if (more) $("button", more).onclick = () => toggleMore();
+  bindToc();
+}
+/* 노션식 목차 — 오른쪽에 짧은 선, 마우스를 올리면 제목 목록이 펼쳐짐 */
+function toc() { return `<nav class="ntoc" aria-label="목차"><div class="bars"></div><div class="list"></div></nav>`; }
+function bindToc() {
+  const nt = $(".ntoc"); if (!nt) return;
+  const items = [];
+  $$(".dsec").forEach(s => { items.push({ el: s, t: s.dataset.t, lv: 0 });
+    $$(".solh", s).forEach((h, i) => { if (!h.id) h.id = s.id + "-" + i; items.push({ el: h, t: h.querySelector("small").textContent.replace(/^\d+\.\s*/, ""), lv: 1 }); }); });
+  if ($("#ux")) items.push({ el: $("#ux"), t: "UX 더보기", lv: 0, ux: true });
+  $(".bars", nt).innerHTML = items.map(it => `<i class="${it.lv ? "sub" : ""}"></i>`).join("");
+  $(".list", nt).innerHTML = items.map(it => `<a href="#" class="${it.lv ? "sub" : ""}" data-j="${it.ux ? "ux" : it.el.id}">${esc(it.t)}</a>`).join("");
+  const bars = $$(".bars i", nt), links = $$(".list a", nt);
+  const upd = () => { let k = 0; items.forEach((it, i) => { if (it.el.getBoundingClientRect().top < innerHeight * .35) k = i; });
+    bars.forEach((b, i) => b.classList.toggle("on", i === k)); links.forEach((a, i) => a.classList.toggle("on", i === k)); };
+  if (window._tocUpd) removeEventListener("scroll", window._tocUpd);
+  window._tocUpd = () => { if (document.body.contains(nt)) upd(); }; addEventListener("scroll", window._tocUpd, { passive: true }); upd();
 }
 function toggleMore(force) {
   const m = $("#ux"); if (!m) return; const open = force ?? !m.classList.contains("open");

@@ -467,3 +467,5 @@ window.AWARDS = [
   { d: "2025.02", b: "SILVER AWARD", t: "Global Design Workshop 2025", s: "국민대 × 시바우라공대 · PITTO 캐릭터·서비스 UI", img: "pitto_char", link: "pitto" },
   { d: "2024.06", b: "우수상", t: "AI가 생성한 한국 이미지 공모전", s: "한국이미지커뮤니케이션연구원 · 경복궁 × 자개 질감 AI 이미지", noimg: ["경복궁 × 자개", "AI 이미지 생성 · Midjourney"] },
 ];
+
+P.orbit.sol.noHead = true; P.wanju.sol.noHead = true; // 피그마: SOLUTION 머리 없이 01부터 시작
