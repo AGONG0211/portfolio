@@ -156,11 +156,15 @@ p{margin:0}
 .foot .up:hover{background:#fff;color:var(--ink)}
 
 /* ============ DETAIL ============ */
-.dpage{background:var(--bg)}
+.dpage{background:#F5F6FA}
+/* 피그마처럼: 줄바꿈 위치 그대로, 한글은 글자 단위로 줄바꿈 */
+.dpage .content :is(p,b,h3,small){white-space:pre-line}
+.dpage .content{word-break:normal}
 .dhero{background:linear-gradient(180deg,var(--tint),var(--bg));padding:clamp(40px,6vw,80px) 0 0}
 /* 피그마: 본문 padding 80/0/100/0 · 사이드 380(좌우 40) · 콘텐츠 1060(좌우 100) */
-.dbody{display:grid;grid-template-columns:380px minmax(0,1fr);max-width:1440px;margin-inline:auto;padding:80px 0 100px}
-.side{position:sticky;top:96px;align-self:start;display:grid;gap:24px;padding:0 40px;max-height:calc(100vh - 116px);overflow:auto;scrollbar-width:none}
+.wrap.dbody{width:100%}
+.dbody{--sw:clamp(332px,calc(100vw - 1060px),380px);display:grid;grid-template-columns:var(--sw) minmax(0,1fr);max-width:1440px;margin-inline:auto;padding:80px 0 100px}
+.side{position:sticky;top:96px;align-self:start;display:grid;gap:24px;padding:0 calc((var(--sw) - 300px) / 2);max-height:calc(100vh - 116px);overflow:auto;scrollbar-width:none}
 .side::-webkit-scrollbar{display:none}
 .side .back{font-size:13px;font-weight:500;color:var(--sub);display:inline-flex;gap:6px;align-items:center}
 .side .back:hover{color:var(--ink)}
@@ -180,7 +184,7 @@ p{margin:0}
 .toc a::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:0;transition:opacity .25s}
 .toc a.on{color:var(--ink);font-weight:700}.toc a.on::before{opacity:1}
 .toc a.more{color:var(--acct)}
-.content{display:grid;gap:120px;padding:0 clamp(20px,6.95vw,100px);align-content:start}
+.content{display:grid;gap:120px;padding:0 clamp(44px,calc((100vw - var(--sw) - 860px) / 2),100px);align-content:start}
 .dsec{display:grid;gap:32px;scroll-margin-top:90px}
 .head{display:grid;gap:16px}
 .head h2{font-size:clamp(26px,2.36vw,34px);line-height:1.36;letter-spacing:-.025em}
@@ -382,7 +386,7 @@ p{margin:0}
 
 /* 노션식 목차 (오른쪽 고정) */
 .dpage{position:relative}
-.ntoc{position:fixed;right:24px;top:50%;translate:0 -50%;z-index:30;display:flex;justify-content:flex-end}
+.ntoc{position:fixed;right:12px;top:50%;translate:0 -50%;z-index:30;display:flex;justify-content:flex-end}
 .ntoc .bars{display:grid;gap:10px;justify-items:end;padding:12px 4px}
 .ntoc .bars i{display:block;width:16px;height:2px;border-radius:2px;background:#C9CAD3;transition:background .25s,width .25s}
 .ntoc .bars i.sub{width:10px}
@@ -443,7 +447,7 @@ p{margin:0}
 
 @media (max-width:1100px){
  .fcard{grid-template-columns:minmax(0,1fr)}.fvis{aspect-ratio:688/460;min-height:0}
- .dbody{grid-template-columns:320px minmax(0,1fr)}.side{padding:0 24px 0 var(--pad)}.content{padding:0 var(--pad) 0 24px}
+ .dbody{grid-template-columns:300px minmax(0,1fr)}.side{padding:0 16px 0 var(--pad)}.content{padding:0 var(--pad) 0 24px}
 }
 @media (max-width:980px){
  .boxes,.kcards{grid-template-columns:repeat(2,minmax(0,1fr))}.ivg{grid-template-columns:repeat(3,minmax(0,1fr))}
