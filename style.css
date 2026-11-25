@@ -133,7 +133,7 @@ p{margin:0}
 .awards{background:var(--bg)}
 .agrid{display:grid;grid-template-columns:minmax(0,1fr);gap:56px}
 /* 클릭·호버 없음 — 어떤 상인지, 무엇을 만들었는지는 썸네일 안 정보 패널로 */
-.aw{display:grid;gap:16px;align-content:start;cursor:default}
+.aw{display:block;cursor:default}
 .aw .im{position:relative;aspect-ratio:1240/500;border-radius:32px;overflow:hidden;background:#fff}
 .aw .im img{width:100%;height:100%;object-fit:cover}
 .aw .im.noimg{background:radial-gradient(120% 90% at 70% 30%,#3a3350,#16161D 70%)}

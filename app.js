@@ -56,9 +56,7 @@ function home() {
 <div class="shead"><h2 class="stitle" data-r>Awards</h2><span class="cnt">${String(window.AWARDS.length).padStart(2, "0")}</span></div>
 <div class="agrid">${window.AWARDS.map(a => `<article class="aw" data-r>
 <div class="im ${a.noimg ? "noimg" : ""}">${a.noimg ? "" : `<img src="${IMG(a.img)}" alt="${esc(a.t)}" loading="lazy">`}
-<div class="cap"><div class="cb"><span class="pill">🏆 ${esc(a.b)}</span><span>${esc(a.t)}</span></div><b>${esc(a.w[0])}</b><p>${esc(a.w[1])}</p><small>내가 한 일 · ${esc(a.w[2])}</small></div></div>
-<div class="bd"><span>🏆 ${esc(a.b)}</span><span class="dt">${esc(a.d)}</span></div>
-<div><h4>${esc(a.t)}</h4><p>${esc(a.s)}</p></div></article>`).join("")}</div></div></section>
+<div class="cap"><div class="cb"><span class="pill">🏆 ${esc(a.b)}</span><span>${esc(a.t)} · ${esc(a.d)}</span></div><b>${esc(a.w[0])}</b><p>${esc(a.w[1])}</p><small>내가 한 일 · ${esc(a.w[2])}</small></div></div></article>`).join("")}</div></div></section>
 ` + contact();
   bindHome();
 }
