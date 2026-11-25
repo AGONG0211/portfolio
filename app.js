@@ -34,10 +34,10 @@ function home() {
 
 <section class="sec" id="about"><div class="wrap">
 <div class="shead"><h2 class="stitle" data-r>About</h2></div>
-<div class="about"><div class="portrait" data-r><img src="${IMG("profile")}" alt="양세연 프로필 사진"></div>
-<div class="txt" data-r><h3>사용자에게 필요한 서비스를 기획하고 디자인합니다.</h3>
-<div class="bio"><p>사용자가 불편해하거나 필요로 하는 것에서 출발해 서비스를 기획하고 디자인합니다. 시간 배분 앱 완주, 관심으로 나를 이해하는 ORBIT, 휠체어 사용자의 이동을 돕는 ONVIA를 만들었습니다.</p>
-<p>리서치와 UT로 방향을 정하고, 캐릭터·3D·생성형 AI로 비주얼을 만들며, 필요하면 바이브코딩으로 직접 구현해 검증합니다. 완주는 팀과 함께 iOS에 출시했습니다.</p>
+<div class="about"><h3 data-r>사용자를 이해하고,<br>상상을 실제 경험으로 만듭니다.</h3>
+<div class="txt" data-r>
+<div class="bio"><p>기획부터 UX/UI, 캐릭터, AI, 구현까지. 필요한 방법을 탐구하며 아이디어를 실제 작동하는 서비스로 완성하는 디자이너입니다.</p>
+<p>사용자가 불편해하거나 필요로 하는 것에서 출발해 서비스를 기획하고 디자인합니다. 시간 배분 앱 완주, 관심으로 나를 이해하는 ORBIT, 휠체어 사용자의 이동을 돕는 ONVIA를 만들었습니다. 리서치와 UT로 방향을 정하고, 캐릭터·3D·생성형 AI로 비주얼을 만들며, 필요하면 바이브코딩으로 직접 구현해 검증합니다. 완주는 팀과 함께 iOS에 출시했습니다.</p>
 <p>일본 학생들과의 워크숍, 다른 학교와의 협업 전시, 직접 꾸린 창업 동아리까지 낯선 팀과 처음 해 보는 일에도 먼저 손을 들어 왔습니다. 모르는 건 배워서 하고, 맡은 일은 끝까지 해냅니다.</p></div>
 <div class="kw">${[["리서치 · UT", "p-wanju"], ["서비스 기획", "p-orbit"], ["UX/UI 디자인", "work-uxui"], ["캐릭터 · 3D", "work-character"], ["AI 비주얼 · 바이브코딩", "work-ai"]].map(([t, h]) => `<a class="chip" href="#${h}">${t}</a>`).join("")}</div>
 <div class="hlt"><div><b>iOS 출시</b><span>WANJU · 직접 제안한 팀 프로젝트</span></div><div><b>SILVER AWARD</b><span>Global Design Workshop 2025</span></div><div><b>Web MVP</b><span>ORBIT 졸업전시 · 1인 구현</span></div></div>
@@ -62,9 +62,9 @@ function home() {
 }
 function featCard(id) {
   const p = P[id], c = p.card;
-  const vis = `<img class="fimg ${c.loop ? "hasv" : ""}" src="${IMG("fv_" + id)}" alt="${esc(p.title)}">`;
+  const vis = `<img class="fimg" src="${IMG("fv_" + id)}" alt="${esc(p.title)}">`;
   return `<article class="fcard" data-go="${id}" data-r style="--c1:${p.cardBg};--fb:${p.featBg || p.tint}" data-cursor="View">
-<div class="fvis">${c.loop ? `<video class="bgv" src="${c.loop}" muted loop playsinline preload="none"></video>` : ""}${vis}</div>
+<div class="fvis">${vis}</div>
 <div class="finfo"><h3>${esc(p.title)}</h3><p class="one">${esc(c.featOne || p.one)}</p><p class="d">${esc(c.desc)}</p>${tagrow(c.chips || c.tags)}
 <span class="date">${esc(p.period)}</span>
 <div class="acts"><span class="btn">자세히 보기 →</span>${id === "orbit" ? `<a class="btn ghost" href="${S.orbitUrl}" target="_blank" rel="noopener" data-stop>직접 체험하기 ↗</a>` : ""}</div></div></article>`;
@@ -72,7 +72,7 @@ function featCard(id) {
 function card(id) {
   const p = P[id], c = p.card;
   return `<article class="card" data-go="${id}" data-cats="${p.cats.join(" ")}" style="--c1:${p.tint}" data-cursor="View" data-r>
-<div class="th"><img src="${IMG("th_" + id)}" alt="${esc(p.title)}" loading="lazy">${c.loop ? `<video src="${c.loop}" muted loop playsinline preload="none"></video>` : ""}<span class="go" aria-hidden="true">→</span></div>
+<div class="th"><img src="${IMG("th_" + id)}" alt="${esc(p.title)}" loading="lazy"><span class="go" aria-hidden="true">→</span></div>
 <div class="info"><h4>${esc(p.title)}</h4><p>${esc(c.allDesc || c.desc)}</p>${c.role ? `<p class="role">${esc(c.role)}</p>` : ""}${tagrow(c.tags || c.chips)}</div></article>`;
 }
 const contact = () => `<section class="contact" id="contact"><div class="wrap"><h2 data-r><span>무엇이든 배우고,</span><br><span>끝까지 해내겠습니다.</span></h2>
