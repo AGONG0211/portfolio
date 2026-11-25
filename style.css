@@ -46,6 +46,17 @@ p{margin:0}
 /* HERO — #F5F5F8, padding 110/100/130/100, 68 Bold -3.5% lh 112% */
 .hero{background:var(--bg);padding:110px 0 130px;min-height:684px;display:flex;align-items:center}
 .hero>.wrap{display:grid;gap:32px}
+/* 피그마 HERO 배경: 은은한 블러 블롭 (보라 18% · 핑크 24% · 민트 26% · 연보라 20%) */
+.hero{position:relative;overflow:hidden}
+.hero>.wrap{position:relative;z-index:1}
+.hero .blobs{position:absolute;inset:0;pointer-events:none}
+.hero .blobs i{position:absolute;border-radius:50%;filter:blur(100px);animation:drift 18s ease-in-out infinite alternate}
+.hero .blobs i:nth-child(1){left:48.6%;top:-17.5%;width:50%;height:93.6%;background:#8C7BFF;opacity:.18}
+.hero .blobs i:nth-child(2){left:73.6%;top:43.9%;width:38.9%;height:73.1%;background:#FFB4CB;opacity:.24;animation-duration:22s;animation-delay:-6s}
+.hero .blobs i:nth-child(3){left:38.9%;top:58.5%;width:36.1%;height:64.3%;background:#B9F3DA;opacity:.26;animation-duration:20s;animation-delay:-11s}
+.hero .blobs i:nth-child(4){left:-9.7%;top:-23.4%;width:36.1%;height:61.4%;background:#D6D0FF;opacity:.20;filter:blur(90px);animation-duration:24s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(-3%,4%) scale(1.06)}}
+@media (prefers-reduced-motion:reduce){.hero .blobs i{animation:none}}
 .hero h1{font-family:var(--display);font-size:clamp(40px,4.73vw,68px);line-height:1.12;letter-spacing:-.02em;font-weight:700}
 .hero h1 .ln{display:block;overflow:hidden}
 .hero h1 .ln span{display:inline-block;transform:translateY(105%);animation:up 1s var(--ease) forwards}
@@ -89,6 +100,9 @@ p{margin:0}
 .fcard:hover .fvis .bgv{opacity:1}
 .fvis .phs{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;gap:3%;transition:opacity .5s}
 .fcard:hover .fvis .phs.hasv{opacity:0}
+.fvis .fimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s,transform 1s var(--ease)}
+.fcard:hover .fvis .fimg{transform:scale(1.03)}
+.fcard:hover .fvis .fimg.hasv{opacity:0}
 .fvis .phs img{width:25%;border-radius:18px;box-shadow:0 30px 50px -20px rgba(0,0,0,.4);transition:transform .9s var(--ease)}
 .fvis .phs img:nth-child(1){transform:rotate(-7deg) translate(14%,6%)}
 .fvis .phs img:nth-child(3){transform:rotate(7deg) translate(-14%,6%)}
@@ -97,7 +111,7 @@ p{margin:0}
 .fcard:hover .fvis .phs img:nth-child(3){transform:rotate(10deg) translate(4%,2%)}
 .finfo{padding:clamp(28px,3.9vw,56px);display:flex;flex-direction:column;gap:20px;justify-content:center}
 .finfo h3{font-size:clamp(34px,3.33vw,48px);line-height:1.18;letter-spacing:-.03em}
-.finfo .one{font-size:19px;font-weight:500;line-height:1.75;letter-spacing:-.01em}
+.finfo .one{font-size:19px;font-weight:500;line-height:1.75;letter-spacing:-.01em;white-space:pre-line}
 .finfo .d{font-size:15px;line-height:1.65;color:var(--sub)}
 .tagrow{display:flex;flex-wrap:wrap;gap:8px}
 .finfo .date{font-size:14px;color:var(--sub);line-height:1.4}
@@ -121,8 +135,9 @@ p{margin:0}
 .card:hover .th>img{transform:scale(1.04)}
 .card .th video{position:absolute;inset:0;opacity:0;transition:opacity .5s}
 .card:hover .th video{opacity:1}
-.card .go{position:absolute;left:50%;top:50%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;font-size:34px;font-weight:400;color:var(--ink);opacity:0;scale:.7;transition:opacity .4s var(--ease),scale .5s var(--ease);box-shadow:0 20px 40px -20px rgba(0,0,0,.35);z-index:2}
-.card:hover .go{opacity:1;scale:1}
+/* 피그마: 오른쪽 아래 60px 흰 원 + 은은한 그림자(shadow/float-button) */
+.card .go{position:absolute;right:30px;bottom:30px;width:60px;height:60px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:22px;font-weight:500;color:var(--ink);box-shadow:0 2px 6px rgba(15,18,26,.06),0 8px 20px -4px rgba(15,18,26,.10);transition:transform .5s var(--ease),box-shadow .5s var(--ease);z-index:2}
+.card:hover .go{transform:translateY(-3px);box-shadow:0 4px 10px rgba(15,18,26,.08),0 14px 28px -6px rgba(15,18,26,.14)}
 .card .info{display:grid;gap:8px}
 .card h4{font-size:clamp(24px,2.1vw,30px);line-height:1.3;letter-spacing:-.015em}
 .card p{font-size:16px;line-height:1.75;color:var(--sub)}

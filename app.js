@@ -27,10 +27,10 @@ const tagrow = t => `<div class="tagrow">${t.map(x => `<span class="chip">${esc(
 function home() {
   setVars(P.orbit);
   app.innerHTML = nav("") + `
-<section class="hero" id="top"><div class="wrap">
+<section class="hero" id="top"><div class="blobs" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="wrap">
 <h1><span class="ln"><span>SEYEON'S</span></span><span class="ln"><span>PORTFOLIO</span></span></h1>
 <p class="lead">UX/UI 디자이너 양세연입니다.<br>필요하면 새로운 도구도 배워서, 직접 끝까지 만들어 봅니다.</p>
-<div class="tags">${[["UXUI", "work-uxui"], ["AI", "work-ai"], ["CHARACTER", "work-character"]].map(([t, h]) => `<a href="#${h}">${t}</a>`).join("")}</div></div></section>
+<div class="tags">${[["UX/UI", "work-uxui"], ["AI", "work-ai"], ["CHARACTER", "work-character"]].map(([t, h]) => `<a href="#${h}">${t}</a>`).join("")}</div></div></section>
 
 <section class="sec" id="about"><div class="wrap">
 <div class="shead"><h2 class="stitle" data-r>About</h2></div>
@@ -62,21 +62,21 @@ function home() {
 }
 function featCard(id) {
   const p = P[id], c = p.card;
-  const vis = c.phones ? `<div class="phs ${c.loop ? "hasv" : ""}">${c.phones.map(k => `<img src="${IMG(k)}" alt="">`).join("")}</div>` : `<img src="${IMG(c.thumb)}" alt="" style="width:100%;height:100%;object-fit:cover">`;
+  const vis = `<img class="fimg ${c.loop ? "hasv" : ""}" src="${IMG("fv_" + id)}" alt="${esc(p.title)}">`;
   return `<article class="fcard" data-go="${id}" data-r style="--c1:${p.cardBg};--fb:${p.featBg || p.tint}" data-cursor="View">
 <div class="fvis">${c.loop ? `<video class="bgv" src="${c.loop}" muted loop playsinline preload="none"></video>` : ""}${vis}</div>
-<div class="finfo"><h3>${esc(p.title)}</h3><p class="one">${esc(p.one)}</p><p class="d">${esc(c.desc)}</p>${tagrow(c.tags || c.chips)}
+<div class="finfo"><h3>${esc(p.title)}</h3><p class="one">${esc(c.featOne || p.one)}</p><p class="d">${esc(c.desc)}</p>${tagrow(c.chips || c.tags)}
 <span class="date">${esc(p.period)}</span>
 <div class="acts"><span class="btn">자세히 보기 →</span>${id === "orbit" ? `<a class="btn ghost" href="${S.orbitUrl}" target="_blank" rel="noopener" data-stop>직접 체험하기 ↗</a>` : ""}</div></div></article>`;
 }
 function card(id) {
   const p = P[id], c = p.card;
   return `<article class="card" data-go="${id}" data-cats="${p.cats.join(" ")}" style="--c1:${p.tint}" data-cursor="View" data-r>
-<div class="th ${c.portrait ? "portrait" : ""} ${c.phones ? "phs" : ""}" ${c.phones ? `style="background:${p.cardBg}"` : ""}>${c.phones ? c.phones.map(k => `<img src="${IMG(k)}" alt="">`).join("") : im(c.thumb, p.title)}${c.loop ? `<video src="${c.loop}" muted loop playsinline preload="none"></video>` : ""}<span class="go" aria-hidden="true">↗</span></div>
+<div class="th"><img src="${IMG("th_" + id)}" alt="${esc(p.title)}" loading="lazy">${c.loop ? `<video src="${c.loop}" muted loop playsinline preload="none"></video>` : ""}<span class="go" aria-hidden="true">→</span></div>
 <div class="info"><h4>${esc(p.title)}</h4><p>${esc(c.allDesc || c.desc)}</p>${c.role ? `<p class="role">${esc(c.role)}</p>` : ""}${tagrow(c.tags || c.chips)}</div></article>`;
 }
 const contact = () => `<section class="contact" id="contact"><div class="wrap"><h2 data-r><span>무엇이든 배우고,</span><br><span>끝까지 해내겠습니다.</span></h2>
-<div class="mails">${S.emails.map(m => `<button data-copy="${m}">${m} <small>복사</small></button>`).join("")}</div>
+<div class="mails">${S.emails.map(m => `<button data-copy="${m}">${m} <small>복사</small></button>`).join("")}${S.phone ? `<button data-copy="${S.phone}">${S.phone} <small>복사</small></button>` : ""}</div>
 <div class="foot"><span>© 2026 Yang Seyeon · UX/UI Designer</span><button class="up" data-top aria-label="맨 위로">↑</button></div></div></section>`;
 
 function bindHome() {
@@ -106,8 +106,10 @@ function side(p) {
 <dl>${p.meta.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd${ph(v)}>${esc(v)}</dd></div>`).join("")}</dl>
 ${p.cta ? (p.cta.video ? `<button class="btn" data-video="${p.video}">${esc(p.cta.t)}</button>` : `<a class="btn" href="${esc(p.cta.href)}" ${p.cta.href.startsWith("http") ? 'target="_blank" rel="noopener"' : 'data-todo="링크 준비 중"'}>${esc(p.cta.t)}</a>`) : ""}</div>`;
 }
-function cover(p) { return coverRaw(p).replace('<div class="cover', `<div style="${(window.FIGMA_COVER || {})[p.title] ? `aspect-ratio:${window.FIGMA_COVER[p.title]};height:auto;` : ""}" class="cover`); }
+function cover(p) { return coverRaw(p); }
 function coverRaw(p) {
+  const id = Object.keys(P).find(k => P[k] === p);
+  if (id) return `<div class="cover" data-r style="aspect-ratio:860/534;height:auto">${im("cv_" + id, p.title)}${p.video ? `<button class="btn ghost play" data-video="${p.video}">▶ ${id === "onvia" ? "시나리오 영상" : "소개 영상"}</button>` : ""}</div>`;
   const c = p.ov.cover;
   if (c.kind === "phones") return `<div class="cover phones" data-r style="background:linear-gradient(135deg,${c.bg[0]},${c.bg[1]})">${c.keys.map(k => im(k)).join("")}${p.video ? `<button class="btn ghost play" data-video="${p.video}">▶ 소개 영상</button>` : ""}</div>`;
   if (c.kind === "posters") return `<div class="cover posters" data-r style="background:linear-gradient(135deg,${c.bg[0]},${c.bg[1]})">${c.keys.map(k => im(k)).join("")}</div>`;
@@ -175,7 +177,7 @@ function detail(id) {
   S2.push(["Result & Insight", `${head("RESULT & INSIGHT", "결과와 배운 점")}<div class="stk s14"><div class="rnum" data-r style="--n:${p.res.nums.length}">${p.res.nums.map(([v, l, s]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span><small>${esc(s)}</small></div>`).join("")}</div><div class="rnum rins" data-r style="--n:${p.res.ins.length}">${p.res.ins.map(([k, t]) => `<div><small>${esc(k)}</small><b>${esc(t)}</b></div>`).join("")}</div></div>`]);
   const idx = allOrder.indexOf(id), nid = allOrder[(idx + 1) % allOrder.length], np = P[nid];
   app.innerHTML = nav("work") + `<main class="dpage"><div class="wrap dbody">${side(p)}<div class="content">${S2.map(([t, h], i) => `<section class="dsec" id="s-${i}" data-t="${esc(t)}">${h}</section>`).join("")}${p.more ? doc(p) : ""}</div></div>${toc()}</main>
-<section class="next" data-go="${nid}" data-cursor="Next" style="--tint:${np.tint}"><div class="wrap"><div><span class="lbl" style="color:var(--sub);font-size:13px">NEXT PROJECT</span><h3>${esc(np.title)} →</h3></div><img src="${IMG(np.card.thumb)}" alt=""></div></section>
+<section class="next" data-go="${nid}" data-cursor="Next" style="--tint:${np.tint}"><div class="wrap"><div><span class="lbl" style="color:var(--sub);font-size:13px">NEXT PROJECT</span><h3>${esc(np.title)} →</h3></div><img src="${IMG("th_" + nid)}" alt=""></div></section>
 <footer class="dfoot"><div class="wrap"><span>© 2026 Yang Seyeon</span><button data-top>Top ↑</button></div></footer>`;
   const more = $("#ux");
   if (more) $("button", more).onclick = () => toggleMore();
@@ -209,13 +211,13 @@ function resume() {
   const sec = (en, ko, inner, n) => `<section class="rsec" id="r-${en.toLowerCase()}"><div class="rh"><h2>${esc(en)}<span>${esc(ko)}</span></h2>${n != null ? `<span>${String(n).padStart(2, "0")}</span>` : ""}</div>${inner}</section>`;
   app.innerHTML = nav("resume") + `<main class="dpage rpage"><div class="wrap dbody"><div class="side"><span class="lbl">RESUME</span><h1>양세연<small>Yang Seyeon</small></h1>
 <b>UX/UI · Character Designer</b><p class="one" style="font-weight:400;color:var(--body);font-size:14px">서비스 기획과 UX/UI 디자인을 하고, 생성형 AI와 바이브코딩으로 직접 구현까지 합니다. 처음 해 보는 일도 배우면서 끝까지 해냅니다.</p>
-<dl>${S.emails.map(m => `<div><dt>Email</dt><dd>${m}</dd></div>`).join("")}<div><dt>School</dt><dd>국민대학교 AI디자인학과 · 2027.02 졸업 예정</dd></div></dl>
+<dl>${S.emails.map(m => `<div><dt>Email</dt><dd>${m}</dd></div>`).join("")}${S.phone ? `<div><dt>Phone</dt><dd>${S.phone}</dd></div>` : ""}<div><dt>School</dt><dd>국민대학교 AI디자인학과 · 2027.02 졸업 예정</dd></div></dl>
 <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-todo="PDF 파일을 연결하면 바로 내려받을 수 있어요">PDF 다운로드 ↓</button><a class="btn ghost" href="#work">작업 보기 →</a></div>
 <nav class="toc">${[...R.sections.map(s => s[0]), "Skills", "Certificates"].map(s => `<a href="#" data-j="r-${s.toLowerCase()}">${s}</a>`).join("")}</nav></div>
 <div class="content" style="gap:72px">${R.sections.map(([en, ko, rs]) => sec(en, ko, rows(rs), rs.length)).join("")}
 ${sec("Skills", "툴킷", `<div class="skills" data-r>${R.skills.map(([k, items]) => `<div><small>${esc(k)}</small>${items.map(x => `<b>${esc(x)}</b>`).join("")}</div>`).join("")}</div>`)}
 ${sec("Certificates", "자격 · 어학", rows(R.certs), R.certs.length)}
-<div class="rcta" data-r><div><b>함께 만들 세계가 있다면, 편하게 연락 주세요.</b><span>${S.emails.join(" · ")}</span></div><button class="btn ghost" data-copy="${S.emails[0]}">이메일 복사</button></div></div></div></main>` + contact();
+<div class="rcta" data-r><div><b>함께 만들 세계가 있다면, 편하게 연락 주세요.</b><span>${[...S.emails, S.phone].filter(Boolean).join(" · ")}</span></div><button class="btn ghost" data-copy="${S.emails[0]}">이메일 복사</button></div></div></div></main>` + contact();
   const ob = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) $$(".toc a").forEach(a => a.classList.toggle("on", a.dataset.j === e.target.id)); }), { rootMargin: "-40% 0px -55% 0px" });
   $$(".rsec").forEach(s => ob.observe(s));
 }
@@ -275,7 +277,7 @@ document.addEventListener("click", e => {
   const go = t.closest("[data-go]"); if (go && !t.closest("a[href^='http']")) { if (curFilter !== "all" && go.classList.contains("card")) pendingCat = curFilter; location.hash = "p-" + go.dataset.go; return; }
   const v = t.closest("[data-video]"); if (v) { openModal(`<video src="${v.dataset.video}" controls autoplay playsinline></video>`); return; }
   const z = t.closest("[data-zoom]"); if (z && !t.closest("[data-go]")) { openModal(`<img src="${z.src}" alt="">`); return; }
-  const cp = t.closest("[data-copy]"); if (cp) { navigator.clipboard?.writeText(cp.dataset.copy).then(() => toast("이메일을 복사했어요 · " + cp.dataset.copy), () => toast(cp.dataset.copy)); return; }
+  const cp = t.closest("[data-copy]"); if (cp) { navigator.clipboard?.writeText(cp.dataset.copy).then(() => toast((cp.dataset.copy.includes("@") ? "이메일" : "연락처") + "을 복사했어요 · " + cp.dataset.copy), () => toast(cp.dataset.copy)); return; }
   const td = t.closest("[data-todo]"); if (td) { e.preventDefault(); toast(td.dataset.todo); return; }
   if (t.closest("[data-top]") || t.closest(".totop")) { scrollTo({ top: 0, behavior: "smooth" }); return; }
   if (t.closest(".modal") && (t.classList.contains("modal") || t.closest(".x"))) closeModal();
