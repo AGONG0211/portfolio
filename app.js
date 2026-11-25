@@ -29,16 +29,17 @@ function home() {
   app.innerHTML = nav("") + `
 <section class="hero" id="top"><div class="wrap">
 <h1><span class="ln"><span>SEYEON'S</span></span><span class="ln"><span>PORTFOLIO</span></span></h1>
-<p class="lead">관심이 행성이 되고, 작은 실천이 마을이 되고,<br>해야 할 일 곁에 캐릭터가 함께하는 서비스를 만듭니다.</p>
+<p class="lead">UX/UI 디자이너 양세연입니다.<br>필요하면 새로운 도구도 배워서, 직접 끝까지 만들어 봅니다.</p>
 <div class="tags">${[["UXUI", "work-uxui"], ["AI", "work-ai"], ["CHARACTER", "work-character"]].map(([t, h]) => `<a href="#${h}">${t}</a>`).join("")}</div></div></section>
 
 <section class="sec" id="about"><div class="wrap">
 <div class="shead"><h2 class="stitle" data-r>About</h2></div>
 <div class="about"><div class="portrait" data-r><img src="${IMG("profile")}" alt="양세연 프로필 사진"></div>
-<div class="txt" data-r><h3>추상적인 경험을,<br>눈에 보이는 세계와 캐릭터로.</h3>
-<div class="bio"><p>저는 사용자가 오래 머물고 싶은 서비스의 세계를 설계하는 UX/UI 디자이너입니다. 흩어진 관심은 행성으로, 일상의 작은 실천은 자라나는 마을로, 미뤄 둔 할 일은 곁을 지키는 캐릭터로 바꾸고, 그 안에서 사용자가 자연스럽게 다음 행동으로 이어지는 흐름을 만듭니다.</p>
-<p>캐릭터·3D 모델링·생성형 AI로 비주얼과 모션을 직접 만들어 빠르게 검증하고, 일본 학생들과의 글로벌 워크숍부터 앱 iOS 출시까지 다양한 팀과 함께 결과를 완성해 왔습니다.</p></div>
-<div class="kw">${[["#세계관 설계", "p-orbit"], ["#캐릭터·3D", "p-wanju"], ["#인터랙션", "p-orbit"], ["#AI 비주얼 디렉션", "p-onvia"], ["#출시 경험", "p-wanju"]].map(([t, h]) => `<a class="chip" href="#${h}">${t}</a>`).join("")}</div>
+<div class="txt" data-r><h3>사용자에게 필요한 서비스를 기획하고 디자인합니다.</h3>
+<div class="bio"><p>사용자가 불편해하거나 필요로 하는 것에서 출발해 서비스를 기획하고 디자인합니다. 시간 배분 앱 완주, 관심으로 나를 이해하는 ORBIT, 휠체어 사용자의 이동을 돕는 ONVIA를 만들었습니다.</p>
+<p>리서치와 UT로 방향을 정하고, 캐릭터·3D·생성형 AI로 비주얼을 만들며, 필요하면 바이브코딩으로 직접 구현해 검증합니다. 완주는 팀과 함께 iOS에 출시했습니다.</p>
+<p>일본 학생들과의 워크숍, 다른 학교와의 협업 전시, 직접 꾸린 창업 동아리까지 낯선 팀과 처음 해 보는 일에도 먼저 손을 들어 왔습니다. 모르는 건 배워서 하고, 맡은 일은 끝까지 해냅니다.</p></div>
+<div class="kw">${[["리서치 · UT", "p-wanju"], ["서비스 기획", "p-orbit"], ["UX/UI 디자인", "work-uxui"], ["캐릭터 · 3D", "work-character"], ["AI 비주얼 · 바이브코딩", "work-ai"]].map(([t, h]) => `<a class="chip" href="#${h}">${t}</a>`).join("")}</div>
 <div class="hlt"><div><b>iOS 출시</b><span>WANJU · 직접 제안한 팀 프로젝트</span></div><div><b>SILVER AWARD</b><span>Global Design Workshop 2025</span></div><div><b>Web MVP</b><span>ORBIT 졸업전시 · 1인 구현</span></div></div>
 <a class="btn" href="#resume">이력서 보기 →</a></div></div></div></section>
 
@@ -53,8 +54,9 @@ function home() {
 
 <section class="sec awards" id="awards"><div class="wrap">
 <div class="shead"><h2 class="stitle" data-r>Awards</h2><span class="cnt">${String(window.AWARDS.length).padStart(2, "0")}</span></div>
-<div class="agrid">${window.AWARDS.map(a => `<article class="aw ${a.link ? "link" : ""}" ${a.link ? `data-go="${a.link}" data-cursor="View"` : ""} data-r>
-<div class="im ${a.noimg ? "noimg" : ""}">${a.noimg ? `<b>${esc(a.noimg[0])}</b><span>${esc(a.noimg[1])}</span>` : `<img src="${IMG(a.img)}" alt="${esc(a.t)}" loading="lazy">`}</div>
+<div class="agrid">${window.AWARDS.map(a => `<article class="aw" data-r>
+<div class="im ${a.noimg ? "noimg" : ""}">${a.noimg ? "" : `<img src="${IMG(a.img)}" alt="${esc(a.t)}" loading="lazy">`}
+<div class="cap"><div class="cb"><span class="pill">🏆 ${esc(a.b)}</span><span>${esc(a.t)}</span></div><b>${esc(a.w[0])}</b><p>${esc(a.w[1])}</p><small>내가 한 일 · ${esc(a.w[2])}</small></div></div>
 <div class="bd"><span>🏆 ${esc(a.b)}</span><span class="dt">${esc(a.d)}</span></div>
 <div><h4>${esc(a.t)}</h4><p>${esc(a.s)}</p></div></article>`).join("")}</div></div></section>
 ` + contact();
@@ -73,11 +75,11 @@ function card(id) {
   const p = P[id], c = p.card;
   return `<article class="card" data-go="${id}" data-cats="${p.cats.join(" ")}" style="--c1:${p.tint}" data-cursor="View" data-r>
 <div class="th ${c.portrait ? "portrait" : ""} ${c.phones ? "phs" : ""}" ${c.phones ? `style="background:${p.cardBg}"` : ""}>${c.phones ? c.phones.map(k => `<img src="${IMG(k)}" alt="">`).join("") : im(c.thumb, p.title)}${c.loop ? `<video src="${c.loop}" muted loop playsinline preload="none"></video>` : ""}<span class="go" aria-hidden="true">↗</span></div>
-<div class="info"><h4>${esc(p.title)}</h4><p>${esc(c.desc)}</p>${tagrow(c.tags || c.chips)}</div></article>`;
+<div class="info"><h4>${esc(p.title)}</h4><p>${esc(c.allDesc || c.desc)}</p>${c.role ? `<p class="role">${esc(c.role)}</p>` : ""}${tagrow(c.tags || c.chips)}</div></article>`;
 }
-const contact = () => `<section class="contact" id="contact"><div class="wrap"><h2 data-r><span>Let's build </span><span>a <em>world</em> together.</span></h2>
+const contact = () => `<section class="contact" id="contact"><div class="wrap"><h2 data-r><span>무엇이든 배우고,</span><br><span>끝까지 해내겠습니다.</span></h2>
 <div class="mails">${S.emails.map(m => `<button data-copy="${m}">${m} <small>복사</small></button>`).join("")}</div>
-<div class="foot"><span>© 2026 Yang Seyeon · UX/UI · Character Designer</span><button class="up" data-top aria-label="맨 위로">↑</button></div></div></section>`;
+<div class="foot"><span>© 2026 Yang Seyeon · UX/UI Designer</span><button class="up" data-top aria-label="맨 위로">↑</button></div></div></section>`;
 
 function bindHome() {
   $(".filter").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; setFilter(b.dataset.f); });
@@ -165,6 +167,7 @@ function detail(id) {
     S2.push([r.label === "INSIGHT" ? "Insight" : "Research", head(r.label || "USER RESEARCH", r.h, r.b) + `<div class="stk s20">${h}</div>`]); }
   if (p.dir) S2.push([p.dir.label ? p.dir.label.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) : "Design Direction", `${head(p.dir.label || "DESIGN DIRECTION", p.dir.h, p.dir.b)}<div class="kcards" data-r style="--n:${p.dir.cards.length}">${p.dir.cards.map(([a, b, c]) => `<div><small>${esc(a)}</small><b>${esc(b)}</b><p>${esc(c)}</p></div>`).join("")}</div>`]);
   S2.push([p.sol.label === "APPLICATIONS" ? "Applications" : "Solution", (p.sol.noHead ? "" : head(p.sol.label || "SOLUTION", p.sol.h, p.sol.b)) + p.sol.items.map((it, i) => `<div class="solh" data-r ${it.cat ? `data-cat="${it.cat}"` : ""}><small>${String(i + 1).padStart(2, "0")}. ${esc(it.kw)}</small><h3>${em(it.t)}</h3><p>${esc(it.d)}</p></div>${solution(it)}`).join("")]);
+  if (p.cw) { const w = p.cw; S2.push(["Character & World", `${head("CHARACTER & WORLD", w.h, w.b)}<div class="kcards" data-r style="--n:${w.cards.length}">${w.cards.map(([a, b, c]) => `<div><small>${esc(a)}</small><b>${esc(b)}</b><p>${esc(c)}</p></div>`).join("")}</div><div class="cwimg" data-r><img src="${IMG(w.img)}" alt="${esc(w.alt)}" loading="lazy" onerror="this.parentNode.remove()"></div>`]); }
   if (p.fin) { const f = p.fin; let v;
     if (f.keys) v = `<div class="final phones" data-r style="background:linear-gradient(135deg,${f.bg[0]},${f.bg[1]})">${f.keys.map(k => im(k)).join("")}</div>`;
     else if (f.posters) v = `<div class="final posters" data-r>${f.posters.map(k => im(k)).join("")}</div>`;
@@ -207,7 +210,7 @@ function resume() {
   const rows = rs => rs.map(([d, t, s, tags, badge, link]) => `<div class="rrow" data-r><span class="dt">${esc(d)}</span><div><h3>${esc(t)}${badge ? `<span class="bd">${esc(badge)}</span>` : ""}${link ? `<a href="#p-${link}">작업 보기 →</a>` : ""}</h3>${s ? `<p>${esc(s)}</p>` : ""}${tags ? `<div class="chips">${tags.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}</div></div>`).join("");
   const sec = (en, ko, inner, n) => `<section class="rsec" id="r-${en.toLowerCase()}"><div class="rh"><h2>${esc(en)}<span>${esc(ko)}</span></h2>${n != null ? `<span>${String(n).padStart(2, "0")}</span>` : ""}</div>${inner}</section>`;
   app.innerHTML = nav("resume") + `<main class="dpage rpage"><div class="wrap dbody"><div class="side"><span class="lbl">RESUME</span><h1>양세연<small>Yang Seyeon</small></h1>
-<b>UX/UI · Character Designer</b><p class="one" style="font-weight:400;color:var(--body);font-size:14px">추상적인 경험을 눈에 보이는 세계와 캐릭터로 만들고, 생성형 AI와 바이브코딩으로 직접 구현까지 이어가는 디자이너예요.</p>
+<b>UX/UI · Character Designer</b><p class="one" style="font-weight:400;color:var(--body);font-size:14px">서비스 기획과 UX/UI 디자인을 하고, 생성형 AI와 바이브코딩으로 직접 구현까지 합니다. 처음 해 보는 일도 배우면서 끝까지 해냅니다.</p>
 <dl>${S.emails.map(m => `<div><dt>Email</dt><dd>${m}</dd></div>`).join("")}<div><dt>School</dt><dd>국민대학교 AI디자인학과 · 2027.02 졸업 예정</dd></div></dl>
 <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-todo="PDF 파일을 연결하면 바로 내려받을 수 있어요">PDF 다운로드 ↓</button><a class="btn ghost" href="#work">작업 보기 →</a></div>
 <nav class="toc">${[...R.sections.map(s => s[0]), "Skills", "Certificates"].map(s => `<a href="#" data-j="r-${s.toLowerCase()}">${s}</a>`).join("")}</nav></div>

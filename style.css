@@ -6,10 +6,13 @@ COLOUR and TYPE: 흰 바탕 + 잉크 #111114, 프로젝트별 키컬러가 상�
 LAYOUT: 피그마 '코코네 웹 포트폴리오 (레이아웃)' 1440 기준 — 좌우 100 패딩, 콘텐츠 1240.
 */
 /* Pretendard: 설치된 글꼴을 먼저 쓰고, fonts/ 폴더에 woff2가 있으면 그걸 씀 */
+/* 런드리고딕 (LaundryGothic) — 피그마의 큰 제목용 서체 · fonts/에 포함 */
+@font-face{font-family:"LaundryGothic";font-weight:400;font-display:swap;src:url("fonts/TTLaundryGothicR.woff2") format("woff2")}
+@font-face{font-family:"LaundryGothic";font-weight:700;font-display:swap;src:url("fonts/TTLaundryGothicB.woff2") format("woff2")}
 @font-face{font-family:"Pretendard Web";font-weight:100 900;font-display:swap;src:local("Pretendard Variable"),local("Pretendard"),url("fonts/PretendardVariable.woff2") format("woff2-variations")}
 :root{color-scheme:light;--bg:#F5F5F8;--paper:#fff;--ink:#111114;--ink2:#16161D;--sub:#6B6B76;--sub2:#7A7A86;--body:#44444E;--body2:#3A3A44;--line:#E6E6EC;--line2:#E4E5EC;--panel:#EEF0F6;--note:#F7F7F5;
  --acc:#5B45F0;--acct:#5B45F0;--acc2:#C9C1FA;--tint:#EEEBFF;--accl:#E6E2FF;--onacc:#fff;--brand:#6A4CFF;--ease:cubic-bezier(.22,1,.36,1);
- --pad:clamp(20px,6.95vw,100px)}
+ --pad:clamp(20px,6.95vw,100px);--display:"LaundryGothic","Pretendard Web",Pretendard,sans-serif}
 *{box-sizing:border-box;min-width:0}
 html{scroll-behavior:smooth;scroll-padding-top:76px}
 body{margin:0;word-break:keep-all;overflow-wrap:break-word;background:var(--paper);color:var(--ink);font:16px/1.6 "Pretendard Web","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased;font-feature-settings:"ss06"}
@@ -43,7 +46,7 @@ p{margin:0}
 /* HERO — #F5F5F8, padding 110/100/130/100, 68 Bold -3.5% lh 112% */
 .hero{background:var(--bg);padding:110px 0 130px;min-height:684px;display:flex;align-items:center}
 .hero>.wrap{display:grid;gap:32px}
-.hero h1{font-size:clamp(40px,4.73vw,68px);line-height:1.12;letter-spacing:-.035em;font-weight:700}
+.hero h1{font-family:var(--display);font-size:clamp(40px,4.73vw,68px);line-height:1.12;letter-spacing:-.02em;font-weight:700}
 .hero h1 .ln{display:block;overflow:hidden}
 .hero h1 .ln span{display:inline-block;transform:translateY(105%);animation:up 1s var(--ease) forwards}
 .hero h1 .ln:nth-child(2) span{animation-delay:.08s}
@@ -56,7 +59,7 @@ p{margin:0}
 
 /* SECTION HEADS — 56 Bold -3.5% lh 112% */
 .sec{padding:120px 0}
-.stitle{font-size:clamp(36px,3.9vw,56px);line-height:1.12;letter-spacing:-.035em;font-weight:700}
+.stitle{font-family:var(--display);font-size:clamp(36px,3.9vw,56px);line-height:1.12;letter-spacing:-.02em;font-weight:700}
 .shead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:56px}
 .shead .cnt{font-size:14px;color:var(--sub);font-weight:500}
 
@@ -124,24 +127,27 @@ p{margin:0}
 .card h4{font-size:clamp(24px,2.1vw,30px);line-height:1.3;letter-spacing:-.015em}
 .card p{font-size:16px;line-height:1.75;color:var(--sub)}
 .card .tagrow{margin-top:4px}
+.card p.role{font-size:14px;line-height:1.65;color:var(--sub2);margin-top:-4px}
 
 /* AWARDS — #F5F5F8, padding 120/100 · 2열 gap 32 / 행 56 · 이미지 r32 · 이름 21 Bold -1.5% · 설명 14 lh 160 */
 .awards{background:var(--bg)}
-.agrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 32px}
-.aw{display:grid;gap:16px;align-content:start}
-.aw .im{aspect-ratio:608/500;border-radius:32px;overflow:hidden;background:#fff}
-.aw .im img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
-.aw:hover .im img{transform:scale(1.03)}
-.aw .im.noimg{display:grid;place-content:center;gap:10px;text-align:center;background:radial-gradient(120% 90% at 30% 20%,#3a3350,#16161D 70%);color:#fff;padding:24px}
-.aw .im.noimg b{font-size:clamp(28px,2.8vw,40px);letter-spacing:-.03em;line-height:1.2}
-.aw .im.noimg span{font-size:14px;color:#b9b9c6}
+.agrid{display:grid;grid-template-columns:minmax(0,1fr);gap:56px}
+/* 클릭·호버 없음 — 어떤 상인지, 무엇을 만들었는지는 썸네일 안 정보 패널로 */
+.aw{display:grid;gap:16px;align-content:start;cursor:default}
+.aw .im{position:relative;aspect-ratio:1240/500;border-radius:32px;overflow:hidden;background:#fff}
+.aw .im img{width:100%;height:100%;object-fit:cover}
+.aw .im.noimg{background:radial-gradient(120% 90% at 70% 30%,#3a3350,#16161D 70%)}
+.aw .cap{position:absolute;left:32px;bottom:32px;width:min(480px,calc(100% - 64px));display:grid;gap:10px;padding:28px;border-radius:24px;background:rgba(255,255,255,.94);box-shadow:0 16px 40px -12px rgba(0,0,0,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.aw .cap .cb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;font-weight:500;line-height:1.3;color:var(--sub)}
+.aw .cap .pill{padding:6px 10px;border-radius:999px;background:var(--ink);color:#fff;font-size:12px;font-weight:700;white-space:nowrap}
+.aw .cap b{font-size:28px;line-height:1.3;letter-spacing:-.02em;color:var(--ink)}
+.aw .cap p{font-size:15px;line-height:1.6;color:var(--body2)}
+.aw .cap small{font-size:13px;font-weight:500;line-height:1.5;color:var(--sub)}
 .aw .bd{display:flex;gap:8px;flex-wrap:wrap}
 .aw .bd span{padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700;line-height:1.2;background:var(--ink2);color:#fff}
 .aw .bd span.dt{background:#fff;color:var(--sub);font-weight:500;border:1px solid var(--line2)}
 .aw h4{font-size:21px;line-height:1.4;letter-spacing:-.015em}
 .aw p{font-size:14px;line-height:1.6;color:var(--body)}
-.aw a.lk{font-size:14px;font-weight:700;color:var(--brand)}
-.aw.link{cursor:pointer}
 
 /* CONTACT — #111114, padding 140/100/60/100 · 88 Bold -3.5% · 이메일 22 Medium · 푸터 13 #8A8A96 · 60px TOP */
 .contact{background:var(--ink);color:#fff;padding:140px 0 60px;overflow:hidden}
@@ -264,6 +270,8 @@ p{margin:0}
 .kcards small{font-size:13px;font-weight:700;color:var(--acct);letter-spacing:.06em}
 .kcards b{font-size:20px;line-height:1.4;letter-spacing:-.015em}
 .kcards p{font-size:13px;line-height:1.65;color:var(--body)}
+.cwimg{border-radius:18px;overflow:hidden;background:#F0F0F2}
+.cwimg img{width:100%;height:auto}
 /* solution */
 .solh{display:grid;gap:14px}
 .solh small{font-size:14px;font-weight:700;color:var(--acct);letter-spacing:.06em}
@@ -485,3 +493,5 @@ p{margin:0}
  .next .wrap{flex-direction:column;align-items:flex-start}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}[data-r]{opacity:1;transform:none}}
+
+@media (max-width:720px){.aw .im{aspect-ratio:auto;display:flex;flex-direction:column}.aw .im img{aspect-ratio:1240/500;height:auto}.aw .im.noimg{min-height:160px}.aw .cap{position:static;width:auto;border-radius:0;box-shadow:none;padding:20px}.aw .cap b{font-size:22px}}
