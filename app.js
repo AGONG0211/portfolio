@@ -229,16 +229,28 @@ ${sec("Certificates", "자격 · 어학", rows(R.certs), R.certs.length)}
 
 /* ---------- reveal / counters ---------- */
 function reveal() {
-  const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const t = e.target; t.classList.add("in");
-    $$("[data-w]", t).forEach(x => x.style.width = x.dataset.w); $$("circle[data-off]", t).forEach(c => c.style.strokeDashoffset = c.dataset.off); countUp(t); io.unobserve(t); }), { rootMargin: "0px 0px -8% 0px" });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add("in"); io.unobserve(e.target); }), { rootMargin: "0px 0px -8% 0px" });
   $$("[data-r]").forEach(el => io.observe(el));
+  /* 도표는 도표 자체가 화면 안쪽(아래에서 25% 위)까지 들어왔을 때 시작 — 카드 등장과 따로 */
+  const charts = ".sbar, .bars, .donuts, .nums, .rnum:not(.rins)";
+  $$(charts).forEach(c => { $$("[data-w]", c).forEach(x => x.style.width = "0"); $$("circle[data-off]", c).forEach(k => k.style.strokeDashoffset = k.getAttribute("stroke-dasharray")); prepCount(c); });
+  const co = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const t = e.target;
+    setTimeout(() => { $$("[data-w]", t).forEach(x => x.style.width = x.dataset.w); $$("circle[data-off]", t).forEach(k => k.style.strokeDashoffset = k.dataset.off); countUp(t); }, 150);
+    co.unobserve(t); }), { rootMargin: "0px 0px -25% 0px", threshold: 0.4 });
+  $$(charts).forEach(el => co.observe(el));
+}
+const CU_SEL = ".nums b, .rnum:not(.rins) b, .sbar div, .donut text, .bars .r b, .rnum:not(.rins) > div > b";
+function prepCount(root) {
+  if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  [root, ...$$("*", root)].filter(el => el.matches && el.matches(CU_SEL)).forEach(el => { const m = el.textContent.match(/^(\d+(?:\.\d+)?)([\s\S]*)$/); if (!m || el.dataset.cuv) return;
+    el.dataset.cuv = el.textContent; el.textContent = (0).toFixed((m[1].split(".")[1] || "").length) + m[2]; });
 }
 
 /* 숫자 카운트업 — 도표·수치 카드가 보일 때 0부터 올라감 */
 function countUp(root) {
   if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
-  $$(".nums b, .rnum:not(.rins) b, .sbar div, .donut text, .bars .r b", root).forEach(el => {
-    if (el.dataset.cu) return; const m = el.textContent.match(/^(\d+(?:\.\d+)?)([\s\S]*)$/); if (!m) return;
+  [root, ...$$("*", root)].filter(el => el.matches && el.matches(CU_SEL)).forEach(el => {
+    if (el.dataset.cu) return; const m = (el.dataset.cuv || el.textContent).match(/^(\d+(?:\.\d+)?)([\s\S]*)$/); if (!m) return;
     el.dataset.cu = 1; const to = parseFloat(m[1]), dec = (m[1].split(".")[1] || "").length, rest = m[2], t0 = performance.now(), D = 1200;
     const step = now => { const k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 3); el.textContent = (to * e).toFixed(dec) + rest; if (k < 1) requestAnimationFrame(step); };
     el.textContent = (0).toFixed(dec) + rest; requestAnimationFrame(step);
