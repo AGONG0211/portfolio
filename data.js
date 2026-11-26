@@ -521,3 +521,22 @@ P.wanju.card.featOne = "제한된 시간을 할 일에 맞게 배분해 계획�
 P.wanju.card.featDate = "2026 · iOS 출시 / Android 예정"; P.wanju.card.store = true;
 P.timi.bg.b = "캘린더 앱은 이미 많은 사람의 일상 도구가 되었지만, 일정 관리 과정 자체는 여전히 번거롭고 비효율적으로 인식되고 있어요. 서비스가 많아진 것과 만족도는 비례하지 않았어요.";
 P.timi.sol.items[0].strip = [["timi_home", "학생 · 오늘 할 일 중심"], ["timi_home2", "직장인 · 프로젝트 중심"], ["timi_home1", "가정주부 · 할 일 중심"]];
+
+/* 솔루션 화면 — 피그마 목업(베젤 포함) 그대로 내보낸 이미지(img/m_*.webp)로 교체 */
+{ const m = k => "m_" + k, O = P.orbit.sol.items;
+  O[0].left.key = m("o_pl5"); O[0].right[0][0] = m("o_pl6_fix"); O[0].right[1][0] = m("o_pl4_fix");
+  O[1].main = m("o_ch5"); O[1].strip = [[m("o_chless"), "질문에 답하기"], [m("o_ch6"), "궤도에 반영"]];
+  O[2].left[0].key = m("o_ex4"); O[2].left[1].key = m("o_ex5");
+  O[3].shots = [[m("o_tl1"), "주요 변화"], [m("o_tl2"), "전체 기록"]];
+  const W = P.wanju.sol.items;
+  W[0].main = m("wanju_home");
+  W[1].panels = [W[1].panels.find(p => p.t === "일정에 배분"), W[1].panels.find(p => p.t === "과업 등록")];
+  W[1].panels[0].keys = [m("wanju_alloc")]; W[1].panels[1].keys = [m("wanju_task")];
+  W[2].left[0].key = m("wanju_timer"); W[2].left[1].key = m("wanju_t2");
+  P.groo.sol.items[0].main = m("groo_home"); P.groo.sol.items[1].main = m("groo_village");
+  const V = P.onvia.sol.items; V[0].panels[0].keys = [m("onvia_search")]; V[0].panels[1].keys = [m("onvia_home")]; V[1].main = m("onvia_map");
+  const T = P.timi.sol.items; T[0].main = m("timi_home");
+  T[0].strip = [[m("timi_s_student"), "학생 · 오늘 할 일 중심"], [m("timi_s_worker"), "직장인 · 프로젝트 중심"], [m("timi_s_home"), "가정주부 · 할 일 중심"]];
+  T[1].left[0].key = m("timi_ai"); T[1].left[1].key = m("timi_ai2");
+  T[2].panels[0].keys = [m("timi_proj")]; T[2].panels[1].keys = [m("timi_alarm")];
+}

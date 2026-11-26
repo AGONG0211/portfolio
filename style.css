@@ -534,3 +534,17 @@ p{margin:0}
 .tokens>div{display:flex;gap:18px;align-items:flex-end}.tokens span{display:grid;justify-items:center;gap:6px;font-size:12px;color:var(--sub)}
 .tokens i{display:block;background:var(--tint);border:1px solid var(--acc);border-radius:4px}
 @media (max-width:720px){.duo,.evo{grid-template-columns:minmax(0,1fr)}.evo .es{justify-content:center}}
+/* 피그마 목업 이미지(베젤 포함) — CSS 모서리·그림자 대신 이미지 그대로 */
+img[src*="img/m_"]{border-radius:0!important;box-shadow:none!important;background:none}
+img[src*="m_o_pl6"],img[src*="m_o_pl4"],img[src*="m_o_chless"],img[src*="m_o_ch6"],img[src*="m_timi_s_"]{filter:drop-shadow(0 12px 14px rgba(13,8,51,.14))}
+.annot{grid-template-columns:minmax(150px,270px) minmax(0,1fr);column-gap:0}
+.annot.strip{grid-template-columns:minmax(150px,250px) minmax(0,1fr) minmax(0,1.6fr)}
+.annot.flip{grid-template-columns:minmax(0,1fr) minmax(150px,270px)}
+.annot .notes{margin-left:-6px}.annot.flip .notes{margin:0 -6px 0 0}
+.annot.strip .stripw{margin-left:clamp(20px,3vw,40px)}
+/* 피그마 연결선: 화면 끝의 점(7px) + 짧은 선(16px) → 13px 띄우고 제목 */
+.note{padding-left:32px}
+.note::before{left:0;top:7px;width:7px;height:7px;box-shadow:none;background:var(--acc);z-index:1}
+.note::after{display:block;left:3px;top:10px;width:16px;height:1px;background:color-mix(in srgb,var(--acc) 60%,#fff)}
+.annot.flip .note{padding:0 32px 0 0}.annot.flip .note::before{left:auto;right:0}.annot.flip .note::after{display:block;left:auto;right:3px}
+@media (max-width:640px){.annot .notes{margin:0}.note::after{display:block}}

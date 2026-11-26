@@ -3,7 +3,7 @@ const S = window.SITE, P = window.PROJECTS, $ = (s, r = document) => r.querySele
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const em = s => esc(s).replace(/\*([^*]+)\*/g, "<em>$1</em>").replace(/\n/g, "<br>");
 const ph = s => /\[.*\]/.test(s) ? ` class="ph"` : "";
-const IMG = k => `img/${k}.jpg`;
+const IMG = k => k.startsWith("m_") ? `img/${k}.webp` : `img/${k}.jpg`;
 const im = (k, alt = "", cls = "") => `<img src="${IMG(k)}" alt="${esc(alt)}" loading="lazy" ${cls ? `class="${cls}"` : ""} data-zoom>`;
 const AR = k => (window.FIGMA_AR || {})[k];
 const imc = k => AR(k) ? `<img src="${IMG(k)}" alt="" loading="lazy" data-zoom style="aspect-ratio:${AR(k)};object-fit:cover;width:100%">` : im(k);
