@@ -510,3 +510,27 @@ p{margin:0}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}[data-r]{opacity:1;transform:none}}
 
 @media (max-width:720px){.aw .im{aspect-ratio:auto;display:flex;flex-direction:column}.aw .im img{aspect-ratio:1240/500;height:auto}.aw .im.noimg{min-height:160px}.aw .cap{position:static;width:auto;border-radius:0;box-shadow:none;padding:20px}.aw .cap b{font-size:22px}}
+/* 피그마 동기화: ORBIT DISCOVER(duo) · EVOLVE(evo) · 간격 토큰 */
+.duo{display:grid;grid-template-columns:minmax(0,330fr) minmax(0,511fr);gap:19px}
+.duo .dl{display:grid;gap:10px;justify-items:center;align-content:start;text-align:center;padding:30px 20px}
+.duo .dl b{font-size:16px}.duo .dl p{font-size:12px;color:var(--body);white-space:pre-line;line-height:1.65;margin-bottom:18px}
+.duo .dl img{width:min(100%,225px);border-radius:22px;box-shadow:0 24px 50px -22px rgba(0,0,0,.35);cursor:zoom-in}
+.duo .dr{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;padding:30px 40px}
+.duo figure{margin:0;display:grid;gap:12px}
+.duo figcaption{font-size:12px;color:var(--sub);text-align:center;font-weight:500}
+.duo .dr img{width:100%;border-radius:18px;box-shadow:0 20px 40px -20px rgba(0,0,0,.35);cursor:zoom-in}
+.duo .dn b{display:block;font-size:15px;margin:6px 0 4px}.duo .dn b i{font-style:normal;color:var(--acct);margin-right:8px}
+.duo .dn p{font-size:12px;color:var(--body);line-height:1.65}
+.evo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(20px,4vw,60px);align-items:center}
+.evo .et{display:grid;gap:26px;align-content:center}
+.evo .tabs{display:flex;gap:6px}.evo .tabs span{padding:10px 16px;border-radius:999px;font-size:13px;font-weight:700;line-height:1;color:var(--body)}
+.evo .tabs span.on{background:var(--acc);color:var(--onacc,#fff)}
+.evo .et b{display:block;font-size:15px;margin-bottom:6px}.evo .et p{font-size:12px;color:var(--body);line-height:1.65}
+.evo .es{display:flex;gap:16px;justify-content:flex-end}
+.evo .es figure{margin:0;display:grid;gap:10px;width:min(48%,194px)}
+.evo .es figcaption{font-size:12px;color:var(--sub);text-align:center;font-weight:500}
+.evo .es img{width:100%;border-radius:18px;box-shadow:0 20px 40px -20px rgba(0,0,0,.35);cursor:zoom-in}
+.tokens{display:grid;gap:10px;margin:6px 0}.tokens small{font-size:12px;font-weight:700;color:var(--body)}
+.tokens>div{display:flex;gap:18px;align-items:flex-end}.tokens span{display:grid;justify-items:center;gap:6px;font-size:12px;color:var(--sub)}
+.tokens i{display:block;background:var(--tint);border:1px solid var(--acc);border-radius:4px}
+@media (max-width:720px){.duo,.evo{grid-template-columns:minmax(0,1fr)}.evo .es{justify-content:center}}

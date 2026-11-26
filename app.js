@@ -66,8 +66,8 @@ function featCard(id) {
   return `<article class="fcard" data-go="${id}" data-r style="--c1:${p.cardBg};--fb:${p.featBg || p.tint}" data-cursor="View">
 <div class="fvis">${vis}</div>
 <div class="finfo"><h3>${esc(p.title)}</h3><p class="one">${esc(c.featOne || p.one)}</p><p class="d">${esc(c.desc)}</p>${tagrow(c.chips || c.tags)}
-<span class="date">${esc(p.period)}</span>
-<div class="acts"><span class="btn">자세히 보기 →</span>${id === "orbit" ? `<a class="btn ghost" href="${S.orbitUrl}" target="_blank" rel="noopener" data-stop>직접 체험하기 ↗</a>` : ""}</div></div></article>`;
+<span class="date">${esc(c.featDate || p.period)}</span>
+<div class="acts"><span class="btn">자세히 보기 →</span>${id === "orbit" ? `<a class="btn ghost" href="${S.orbitUrl}" target="_blank" rel="noopener" data-stop>직접 체험하기 ↗</a>` : ""}${c.store ? `<a class="btn ghost" href="#" data-todo="App Store 링크 준비 중">App Store ↗</a>` : ""}</div></div></article>`;
 }
 function card(id) {
   const p = P[id], c = p.card;
@@ -130,6 +130,10 @@ function solution(it) {
   if (L === "wide") return `<div class="panel wide ${it.tall ? "tall" : ""}" data-r>${it.imgs ? `<div class="ims">${it.imgs.map(([k, c]) => `<figure>${im(k)}<figcaption>${esc(c)}</figcaption></figure>`).join("")}</div>` : imc(it.img)}
 ${it.notes ? `<div class="wnotes">${it.notes.map(([t, d], i) => `<div><b><i>${i + 1}</i>${esc(t)}</b><p>${esc(d)}</p></div>`).join("")}</div>` : ""}</div>`;
   if (L === "flow") return flowc(it.steps, it.hl);
+  if (L === "duo") return `<div class="duo" data-r><div class="panel dl"><b>${esc(it.left.t)}</b><p>${esc(it.left.d)}</p>${im(it.left.key)}</div>
+<div class="panel dr">${it.right.map(([k, c, t, d], i) => `<figure><figcaption>${esc(c)}</figcaption>${im(k)}<div class="dn"><b><i>${i + 1}</i>${esc(t)}</b><p>${esc(d)}</p></div></figure>`).join("")}</div></div>`;
+  if (L === "evo") return `<div class="panel evo" data-r><div class="et"><div class="tabs">${it.tabs.map((t, i) => `<span class="${i ? "" : "on"}">${esc(t)}</span>`).join("")}</div>${it.blocks.map(([t, d]) => `<div><b>${esc(t)}</b><p>${esc(d)}</p></div>`).join("")}</div>
+<div class="es">${it.shots.map(([k, c]) => `<figure><figcaption>${esc(c)}</figcaption>${im(k)}</figure>`).join("")}</div></div>`;
   return "";
 }
 const flowc = (steps, hl) => `<div class="flowc" data-r>${steps.map(([t, d], i) => `${i ? `<div class="ar">→</div>` : ""}<div class="${i === hl ? "hl" : ""}"><b>${esc(t)}</b><span>${esc(d)}</span></div>`).join("")}</div>`;
@@ -141,6 +145,7 @@ function doc(p) {
     if (k === "table") return `<div class="tbl"><table><thead><tr>${a.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${c.map(r => `<tr>${r.map(x => `<td>${esc(x)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
     if (k === "callout") return `<div class="callout ${c ? "t" : ""}"><span>${a}</span><span>${esc(c === true ? b[2] : b[2])}</span></div>`.replace(`<span>${esc(b[2])}</span></div>`, `<span>${esc(b[2])}</span></div>`);
     if (k === "props") return `<div class="props">${a.map(([x, y]) => `<div><span>${esc(x)}</span><b${ph(y)}>${esc(y)}</b></div>`).join("")}</div>`;
+    if (k === "tokens") return `<div class="tokens"><small>${esc(a)}</small><div>${c.map(v => `<span><i style="width:${v * 2}px;height:${v * 2}px"></i>${v}</span>`).join("")}</div></div>`;
     if (k === "bul") return `<ul class="bul">${a.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
     if (k === "imgs") return `<div class="ims">${a.map(([x, y]) => `<figure>${im(x)}<figcaption>${esc(y)}</figcaption></figure>`).join("")}</div>`;
     if (k === "tree") return `<div class="tree">${a.map(([s, t, items]) => `<div><div class="h"><small>${esc(s)}</small><b>${esc(t)}</b></div>${items.map(x => `<div class="i">└ ${esc(x)}</div>`).join("")}</div>`).join("")}</div>`;
@@ -274,11 +279,11 @@ document.addEventListener("click", e => {
   const t = e.target;
   if (t.closest("[data-stop]")) return;
   const j = t.closest("[data-j]"); if (j) { e.preventDefault(); if (j.dataset.j === "ux" || j.dataset.j.startsWith("ux-")) toggleMore(true); setTimeout(() => $("#" + j.dataset.j)?.scrollIntoView({ behavior: "smooth" }), j.dataset.j.startsWith("ux") ? 120 : 0); return; }
+  const td = t.closest("[data-todo]"); if (td) { e.preventDefault(); toast(td.dataset.todo); return; }
   const go = t.closest("[data-go]"); if (go && !t.closest("a[href^='http']")) { if (curFilter !== "all" && go.classList.contains("card")) pendingCat = curFilter; location.hash = "p-" + go.dataset.go; return; }
   const v = t.closest("[data-video]"); if (v) { openModal(`<video src="${v.dataset.video}" controls autoplay playsinline></video>`); return; }
   const z = t.closest("[data-zoom]"); if (z && !t.closest("[data-go]")) { openModal(`<img src="${z.src}" alt="">`); return; }
   const cp = t.closest("[data-copy]"); if (cp) { navigator.clipboard?.writeText(cp.dataset.copy).then(() => toast((cp.dataset.copy.includes("@") ? "이메일" : "연락처") + "을 복사했어요 · " + cp.dataset.copy), () => toast(cp.dataset.copy)); return; }
-  const td = t.closest("[data-todo]"); if (td) { e.preventDefault(); toast(td.dataset.todo); return; }
   if (t.closest("[data-top]") || t.closest(".totop")) { scrollTo({ top: 0, behavior: "smooth" }); return; }
   if (t.closest(".modal") && (t.classList.contains("modal") || t.closest(".x"))) closeModal();
   const a = t.closest("a[href^='#']"); if (a && a.getAttribute("href") === location.hash) { e.preventDefault(); route(false); }

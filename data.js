@@ -483,3 +483,41 @@ P.orbit.sol.noHead = true; P.wanju.sol.noHead = true; // 피그마: SOLUTION 머
 /* Selected Work 큰 카드 한 줄 소개 — 피그마 HOME 문구 (상세 부제와 다름) */
 P.orbit.card.featOne = "일상에 남은 관심의 흔적으로,\n내가 무엇에 왜 끌리는지 보여주는 AI 자기이해 서비스";
 P.wanju.card.featOne = "제한된 시간을 할 일에 맞게 배분해 계획부터 완료까지 돕는 일정 관리 앱";
+
+/* ---------------- 피그마 동기화 (2026.11.26) ---------------- */
+{ const S = P.orbit.sol.items;
+  // 01 DISCOVER — 왼쪽 '나의 궤도' 패널 + 오른쪽 화면 2장(번호 설명)
+  Object.assign(S[0], { lay: "duo",
+    left: { t: "나의 궤도", d: "관심 행성들과 오르비가 궤도를 돌며,\n지금의 나를 한 줄로 요약해요.", key: "o_pl5" },
+    right: [["o_pl6_fix", "관심 행성 보기", "행성 = 관심", "크기는 강도, 거리는 관심 사이의 연결이에요. 가장 큰 행성이 가장 강한 관심."],
+            ["o_pl4_fix", "판단의 근거", "근거와 함께", "결과 바로 위에 판단의 근거가 된 사진을 모아 보여줘, 단정이 아닌 '확인 가능한 가설'로 읽히게 했어요."]] });
+  delete S[0].bubble; delete S[0].notes; delete S[0].strip;
+  // 02 UNDERSTAND — 화면 2장, 캡션만
+  S[1].notes[0][1] = "새로 발견된 관심(NEW)을 대화 주제로 꺼내요.";
+  S[1].strip = [["o_chless", "질문에 답하기"], ["o_ch6", "궤도에 반영"]]; delete S[1].stripTitle;
+  // 04 EVOLVE — 한 패널: 왼쪽 탭 + 설명 2개, 오른쪽 화면 2장
+  Object.assign(S[3], { lay: "evo", tabs: ["주요 변화", "전체 기록"],
+    blocks: [["주요 변화 보기", "'오래된 공간을 좋아하는 나를 발견했어요' → '골목에서 공간의 이야기로 관심이 넓어졌어요'처럼 큰 변화만 모아 보여줘요."],
+             ["전체 기록 보기", "변화를 만든 사진·대화·감상까지 시간순으로 펼쳐, 관심이 자라난 과정을 따라가요."]],
+    shots: [["o_tl1", "주요 변화"], ["o_tl2", "전체 기록"]] });
+  delete S[3].panels;
+}
+{ const m = P.orbit.more, sec = t => m.secs.find(s => s.t === t);
+  m.sub = "Human-AI 로직 · 비주얼 로직 · 사용성 테스트 · AI 워크플로우";
+  m.intro = "본문에서는 '무엇을 만들었는지'를 보여줬다면, 여기서는 '어떻게 작동하고 왜 그렇게 설계했는지'를 정리했어요. 정보 구조부터 AI 판단 로직, 비주얼 규칙, 사용성 테스트, 구현 과정 순서로 읽으면 돼요.";
+  const ia = sec("IA").blocks; ia.splice(1, 0, ["h3", "메인 플로우"]); ia.splice(3, 0, ["h3", "메뉴 구조"]);
+  const al = sec("AI Logic").blocks; al.splice(1, 0, ["h3", "분석 파이프라인"]);
+  al.splice(al.findIndex(b => b[0] === "callout"), 0, ["p", "새로운 사진·대화·감상이 쌓이면 루프가 다시 돌면서 '지금의 나'가 갱신돼요. 그래서 결과는 한 번의 검사가 아니라 계속 바뀌는 기록이 돼요."]);
+  const vl = sec("Visual Logic").blocks;
+  vl[0][1] = "숫자와 그래프 대신 *행성과 오르비*로 결과를 보여줘, 분석이 '내 이야기'처럼 읽히게 했어요. 보기 좋은 이미지를 그때그때 만드는 대신, 데이터와 비주얼의 대응 규칙을 먼저 정하고 그 안에서만 생성해 결과가 달라도 하나의 세계관으로 보이게 했어요.";
+  vl.splice(1, 0, ["h3", "매핑 규칙"]); vl.splice(3, 0, ["h3", "오르비 생성 과정"]);
+  const ut = sec("Usability Test").blocks; ut[0][1][0][1] = "5명 · 20~30대";
+  ut.splice(1, 0, ["p", "가장 많이 막힌 지점은 진입, 근거, 표현 세 가지였어요. 공통적으로 '결과가 왜 나왔는지'와 '다음에 무엇을 하면 되는지'가 보이지 않을 때 이탈했어요."]);
+  const aw = sec("AI Workflow").blocks;
+  aw[0][1] = "기획과 디자인에서 끝내지 않고, AI 코딩 도구로 *실제로 작동하는 서비스*까지 혼자 구현했어요. 초기 프로토타입은 Cursor로 만들고, 전시용 웹 MVP는 Codex로 옮겨 고도화했어요.";
+  aw.splice(2, 0, ["tokens", "간격 토큰", [4, 8, 16, 24]]);
+}
+{ const t = P.wanju.more.secs.find(s => s.t === "Character & BX").blocks.find(b => b[0] === "table"); t[2].forEach(r => { if (r[0] === "변환") r[0] = "변환 · 최적화"; }); }
+P.wanju.card.featDate = "2026 · iOS 출시 / Android 예정"; P.wanju.card.store = true;
+P.timi.bg.b = "캘린더 앱은 이미 많은 사람의 일상 도구가 되었지만, 일정 관리 과정 자체는 여전히 번거롭고 비효율적으로 인식되고 있어요. 서비스가 많아진 것과 만족도는 비례하지 않았어요.";
+P.timi.sol.items[0].strip = [["timi_home", "학생 · 오늘 할 일 중심"], ["timi_home2", "직장인 · 프로젝트 중심"], ["timi_home1", "가정주부 · 할 일 중심"]];
