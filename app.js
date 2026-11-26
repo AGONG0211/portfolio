@@ -109,7 +109,7 @@ ${p.cta ? (p.cta.video ? `<button class="btn" data-video="${p.video}">${esc(p.ct
 function cover(p) { return coverRaw(p); }
 function coverRaw(p) {
   const id = Object.keys(P).find(k => P[k] === p);
-  if (id) return `<div class="cover" data-r style="aspect-ratio:860/534;height:auto">${im("cv_" + id, p.title)}${p.video ? `<button class="btn ghost play" data-video="${p.video}">▶ ${id === "onvia" ? "시나리오 영상" : "소개 영상"}</button>` : ""}</div>`;
+  if (id) return `<div class="cover" data-r style="aspect-ratio:860/534;height:auto">${im("cv_" + id, p.title)}</div>`;
   const c = p.ov.cover;
   if (c.kind === "phones") return `<div class="cover phones" data-r style="background:linear-gradient(135deg,${c.bg[0]},${c.bg[1]})">${c.keys.map(k => im(k)).join("")}${p.video ? `<button class="btn ghost play" data-video="${p.video}">▶ 소개 영상</button>` : ""}</div>`;
   if (c.kind === "posters") return `<div class="cover posters" data-r style="background:linear-gradient(135deg,${c.bg[0]},${c.bg[1]})">${c.keys.map(k => im(k)).join("")}</div>`;
@@ -119,13 +119,13 @@ function coverRaw(p) {
 function solution(it) {
   const L = it.lay;
   if (L === "annot") {
-    const notes = `<div class="notes">${it.notes.map(([t, d]) => `<div class="note"><b>${esc(t)}</b><p>${esc(d)}</p></div>`).join("")}</div>`;
+    const notes = `<div class="notes">${it.notes.map(([t, d, ni, nw]) => `<div class="note"><b>${esc(t)}</b><p>${esc(d)}</p>${ni ? `<img class="nimg" src="${IMG(ni)}" alt="" loading="lazy"${nw ? ` style="max-width:${nw}px"` : ""}>` : ""}</div>`).join("")}</div>`;
     const shot = `<div class="shot">${im(it.main)}${it.bubble ? `<div class="bubble"><b>${esc(it.bubble[0])}</b>${esc(it.bubble[1])}</div>` : ""}</div>`;
     const strip = it.strip ? `<div class="stripw">${it.stripTitle ? `<small>${esc(it.stripTitle)}</small>` : ""}<div class="s">${it.strip.map(([k, c]) => `<figure>${im(k)}<figcaption>${esc(c)}</figcaption></figure>`).join("")}</div></div>` : "";
-    return `<div class="panel annot ${it.strip ? "strip" : ""} ${it.flip ? "flip" : ""}" data-r>${shot}${notes}${strip}</div>`;
+    return `<div class="panel annot ${it.strip ? "strip" : ""} ${it.flip ? "flip" : ""}" data-r${it.sw ? ` style="--sw:${it.sw}px"` : ""}>${shot}${notes}${strip}</div>`;
   }
   if (L === "pair") return `<div class="pair" data-r>${it.panels.map(pp => `<div class="panel"><div><b>${esc(pp.t)}</b>${pp.d ? `<p>${esc(pp.d)}</p>` : ""}</div><div class="ims" style="--w:${pp.w || 210}px">${pp.keys.map(k => im(k)).join("")}</div></div>`).join("")}</div>`;
-  if (L === "split") return `<div class="split" data-r><div class="panel lp">${it.left.map(c => `<div><b>${esc(c.t)}</b><p>${esc(c.d)}</p>${c.chips ? `<div class="chips">${c.chips.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}${im(c.key)}</div>`).join("")}</div>
+  if (L === "split") return `<div class="split ${it.left.length === 1 ? "one" : ""}" data-r><div class="panel lp">${it.left.map(c => `<div><b>${esc(c.t)}</b><p>${esc(c.d)}</p>${c.chips ? `<div class="chips">${c.chips.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}${im(c.key)}</div>`).join("")}</div>
 <div class="panel rules"><b>${esc(it.rules.t)}</b>${it.rules.d ? `<p>${esc(it.rules.d)}</p>` : ""}${it.rules.items.map(([a, b], i) => `<div class="rl"><i>${i + 1}</i><div><b>${esc(a)}</b><span>${esc(b)}</span></div></div>`).join("")}</div></div>`;
   if (L === "wide") return `<div class="panel wide ${it.tall ? "tall" : ""}" data-r>${it.imgs ? `<div class="ims">${it.imgs.map(([k, c]) => `<figure>${im(k)}<figcaption>${esc(c)}</figcaption></figure>`).join("")}</div>` : imc(it.img)}
 ${it.notes ? `<div class="wnotes">${it.notes.map(([t, d], i) => `<div><b><i>${i + 1}</i>${esc(t)}</b><p>${esc(d)}</p></div>`).join("")}</div>` : ""}</div>`;
@@ -230,10 +230,20 @@ ${sec("Certificates", "자격 · 어학", rows(R.certs), R.certs.length)}
 /* ---------- reveal / counters ---------- */
 function reveal() {
   const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const t = e.target; t.classList.add("in");
-    $$("[data-w]", t).forEach(x => x.style.width = x.dataset.w); $$("circle[data-off]", t).forEach(c => c.style.strokeDashoffset = c.dataset.off); io.unobserve(t); }), { rootMargin: "0px 0px -8% 0px" });
+    $$("[data-w]", t).forEach(x => x.style.width = x.dataset.w); $$("circle[data-off]", t).forEach(c => c.style.strokeDashoffset = c.dataset.off); countUp(t); io.unobserve(t); }), { rootMargin: "0px 0px -8% 0px" });
   $$("[data-r]").forEach(el => io.observe(el));
 }
 
+/* 숫자 카운트업 — 도표·수치 카드가 보일 때 0부터 올라감 */
+function countUp(root) {
+  if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  $$(".nums b, .rnum:not(.rins) b, .sbar div, .donut text, .bars .r b", root).forEach(el => {
+    if (el.dataset.cu) return; const m = el.textContent.match(/^(\d+(?:\.\d+)?)([\s\S]*)$/); if (!m) return;
+    el.dataset.cu = 1; const to = parseFloat(m[1]), dec = (m[1].split(".")[1] || "").length, rest = m[2], t0 = performance.now(), D = 1200;
+    const step = now => { const k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 3); el.textContent = (to * e).toFixed(dec) + rest; if (k < 1) requestAnimationFrame(step); };
+    el.textContent = (0).toFixed(dec) + rest; requestAnimationFrame(step);
+  });
+}
 /* ---------- router ---------- */
 let current = null;
 function route(first) {

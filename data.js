@@ -540,3 +540,14 @@ P.timi.sol.items[0].strip = [["timi_home", "학생 · 오늘 할 일 중심"], [
   T[1].left[0].key = m("timi_ai"); T[1].left[1].key = m("timi_ai2");
   T[2].panels[0].keys = [m("timi_proj")]; T[2].panels[1].keys = [m("timi_alarm")];
 }
+
+/* 파이널 아웃풋 · 캐릭터&월드 — 피그마 비주얼 그대로(img/m_fo_*, m_cw_*) */
+["orbit", "wanju", "groo", "timi"].forEach(k => { const f = P[k].fin; f.img = "m_fo_" + k; delete f.keys; delete f.video; delete f.tall; });
+["orbit", "wanju", "groo"].forEach(k => P[k].cw.img = "m_cw_" + k);
+P.onvia.fin.img = "onvia_g53"; delete P.onvia.fin.video;
+P.nomi.fin.img = "nomi_brand1"; delete P.nomi.fin.posters;
+P.orbit.sol.items[1].sw = 384; P.timi.sol.items[0].sw = 300;
+/* Groo — 피그마: 미션 칩·아지트 레벨 이미지, SPREAD 화면 왼쪽 */
+P.groo.sol.items[0].notes[0][2] = "m_groo_chips"; P.groo.sol.items[0].notes[2][2] = "m_groo_levels"; P.groo.sol.items[0].notes[2][3] = 319;
+delete P.groo.sol.items[1].flip;
+["orbit", "wanju", "groo"].forEach(k => P[k].cw.h = P[k].cw.h.replace(/\*/g, ""));

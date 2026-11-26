@@ -548,3 +548,24 @@ img[src*="m_o_pl6"],img[src*="m_o_pl4"],img[src*="m_o_chless"],img[src*="m_o_ch6
 .note::after{display:block;left:3px;top:10px;width:16px;height:1px;background:color-mix(in srgb,var(--acc) 60%,#fff)}
 .annot.flip .note{padding:0 32px 0 0}.annot.flip .note::before{left:auto;right:0}.annot.flip .note::after{display:block;left:auto;right:3px}
 @media (max-width:640px){.annot .notes{margin:0}.note::after{display:block}}
+.annot.strip{grid-template-columns:minmax(150px,250px) minmax(0,1fr) minmax(0,var(--sw,1.6fr))}
+.evo .es figure{width:194px}
+.final img[src*="m_fo_"],.cwimg img[src*="m_cw_"]{width:100%;display:block}
+.final:has(img[src*="m_fo_"]),.cwimg:has(img[src*="m_cw_"]){background:none;border-radius:0}
+.note .nimg{display:block;width:100%;margin-top:12px}
+/* 카드 묶음 순차 등장 */
+:is(.boxes,.kcards,.ivg,.rnum,.nums,.flowc,.wnotes,.notes)>*{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.in :is(.boxes,.kcards,.ivg,.rnum,.nums,.flowc,.wnotes,.notes)>*, :is(.boxes,.kcards,.ivg,.rnum,.nums,.flowc,.wnotes,.notes).in>*{opacity:1;transform:none}
+:is(.boxes,.kcards,.ivg,.rnum,.nums,.flowc,.wnotes,.notes)>:nth-child(2){transition-delay:.08s}
+:is(.boxes,.kcards,.ivg,.rnum,.nums,.flowc,.wnotes,.notes)>:nth-child(3){transition-delay:.16s}
+:is(.boxes,.kcards,.ivg,.rnum,.nums,.flowc,.wnotes,.notes)>:nth-child(4){transition-delay:.24s}
+:is(.boxes,.kcards,.ivg,.rnum,.nums,.flowc,.wnotes,.notes)>:nth-child(5){transition-delay:.32s}
+:is(.boxes,.kcards,.ivg,.rnum,.nums,.flowc,.wnotes,.notes)>:nth-child(n+6){transition-delay:.4s}
+.more :is(.flowc)>*{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){:is(.boxes,.kcards,.ivg,.rnum,.nums,.flowc,.wnotes,.notes)>*{opacity:1;transform:none}}
+/* 피그마 맞춤: 노트 간격을 화면 높이에 맞춰 펼침, 결과 인사이트 글자색, split 비율 */
+.annot .notes{align-self:stretch;align-content:space-evenly}
+.annot.strip{grid-template-columns:minmax(150px,270px) minmax(0,1fr) minmax(0,var(--sw,1.6fr))}
+.rins div b,.rins div p{color:var(--ink)}
+.split.one{grid-template-columns:minmax(0,300fr) minmax(0,540fr)}
+@media (max-width:980px){.split.one{grid-template-columns:minmax(0,1fr)}}
